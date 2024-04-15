@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <a-scene
+        mindar-image="imageTargetSrc: /targets.mind;"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane
+            color="blue"
+            opaciy="0.5"
+            position="0 0 0"
+            height="0.552"
+            width="1"
+            rotation="0 0 0"
+          ></a-plane>
+        </a-entity>
+      </a-scene> -->
+      <div id="control">
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop</button>
+      </div>
+      <div id="container"></div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
