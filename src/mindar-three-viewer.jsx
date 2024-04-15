@@ -74,6 +74,7 @@ export default () => {
     // create atToolkitContext
     const arToolkitContext = new ArToolkitContext({
       debug: false,
+      cameraParametersUrl: ArToolkitContext.baseURL + "data/camera_para.dat",
       detectionMode: "mono",
       canvasWidth: 640,
       canvasHeight: 490,
@@ -98,13 +99,12 @@ export default () => {
 
     var markerControls = new ArMarkerControls(arToolkitContext, markerGroup, {
       type: "pattern",
-      patternUrl: ArToolkitContext.baseURL + "patt.patt",
+      patternUrl: ArToolkitContext.baseURL + "data/patt.patt",
       smooth: true,
       smoothCount: 5,
       smoothTolerance: 0.01,
       smoothThreshold: 2
     });
-    console.log(markerControls);
 
     var markerScene = new THREE.Scene();
     markerGroup.add(markerScene);
