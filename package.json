@@ -1,16 +1,4 @@
 {
-  "browserslist": {
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ],
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ]
-  },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
     "@react-three/drei": "^9.23.6",
@@ -21,10 +9,9 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.368.0",
+    "next": "latest",
     "react": "^18.2.0",
-    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.142.0",
@@ -40,10 +27,8 @@
   "name": "image-tracking-typescript",
   "private": true,
   "scripts": {
-    "build": "react-app-rewired build",
-    "eject": "react-scripts eject",
-    "start": "BROWSER=none HTTPS=true react-app-rewired start",
-    "test": "react-app-rewired test"
+    "dev": "next dev --experimental-https",
+    "build": "next build"
   },
   "version": "0.1.0",
   "devDependencies": {
