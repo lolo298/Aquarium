@@ -3,8 +3,22 @@ import { ZapparCamera, ImageTracker, ZapparCanvas } from "@zappar/zappar-react-t
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { Html, useProgress, useTexture } from "@react-three/drei";
+
+////////////////////////
+//      Markers       //
+////////////////////////
+const targetFile = new URL("./assets/example-tracking-image.zpt", import.meta.url).href;
+const targetSecond = new URL("./assets/marker.zpt", import.meta.url).href;
+
+////////////////////////
+//       Models       //
+////////////////////////
+const dorade = new URL("./assets/dorade.fbx", import.meta.url).href;
+const doradeTexture = new URL("./assets/refTexture.png", import.meta.url).href;
+
 export default function Viewer() {
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
 
   return (
     <ZapparCanvas>
@@ -13,10 +27,20 @@ export default function Viewer() {
         onNotVisible={(anchor) => setVisible(false)}
         onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
         onVisible={(anchor) => setVisible(true)}
+        targetImage={targetSecond}
+      >
+        <Suspense fallback={<Loader />}>
+          <Model show={visible} src={dorade} text={doradeTexture} />
+        </Suspense>
+      </ImageTracker>
+      <ImageTracker
+        onNotVisible={(anchor) => setVisible2(false)}
+        onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
+        onVisible={(anchor) => setVisible2(true)}
         targetImage={targetFile}
       >
         <Suspense fallback={<Loader />}>
-          <Model show={visible} />
+          <Model show={visible2} src={dorade} text={doradeTexture} />
         </Suspense>
       </ImageTracker>
       <ambientLight intensity={1} />
@@ -28,19 +52,15 @@ function Loader() {
   const { progress } = useProgress();
   return <Html center>{progress} % loaded</Html>;
 }
-const targetFile = new URL("./assets/example-tracking-image.zpt", import.meta.url).href;
-const dorade = new URL("./assets/dorade.fbx", import.meta.url).href;
-const doradeTexture = new URL("./assets/refTexture.png", import.meta.url).href;
 
-function Model({ show }: { show: boolean }) {
-  const model = useLoader(FBXLoader, dorade);
-  const texture = useTexture(doradeTexture);
+function Model({ src, text, show }: { src: string; text: string; show: boolean }) {
+  const model = useLoader(FBXLoader, src);
+  const texture = useTexture(text);
 
   if (!show) return null;
 
   // Assign the texture to the material of the model
   model.traverse((child) => {
-    console.log(child);
     // @ts-ignore
     if (child.isMesh) {
       // @ts-ignore
