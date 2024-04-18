@@ -21,7 +21,7 @@ export default function Viewer() {
   //      Markers       //
   ////////////////////////
   const targetFile = "/assets/example-tracking-image.zpt";
-  const targetSecond = "/assets/marker.zpt";
+  const targetSecond = "/assets/ar-marker-test.zpt";
 
   ////////////////////////
   //       Models       //
