@@ -6,9 +6,13 @@ import type {
   ImageTracker as TTracker,
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
-import { useLoader } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { Html, useProgress, useTexture } from "@react-three/drei";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { AmbientLight, Mesh } from "three";
+import { Model } from "@/components/Dorade";
+import { Stats, OrbitControls } from "@react-three/drei";
 let ZapparCamera: typeof TCamera;
 let ImageTracker: typeof TTracker;
 let ZapparCanvas: typeof TCanvas;
@@ -26,7 +30,7 @@ export default function Viewer() {
   ////////////////////////
   //       Models       //
   ////////////////////////
-  const dorade = "/assets/dorade.fbx";
+  // const dorade = "/assets/dorade.glb";
   const doradeTexture = "/assets/refTexture.png";
 
   useEffect(() => {
@@ -48,8 +52,17 @@ export default function Viewer() {
 
   return (
     <>
-      <h1>Viewer</h1>
+      {/* <Canvas>
+        <OrbitControls />
+        <Stats />
+        <camera position={[0, 0, 5]} />
+        <Model />
+
+        <ambientLight intensity={1} />
+      </Canvas> */}
       <ZapparCanvas>
+        <OrbitControls />
+        <Stats />
         <ZapparCamera />
         <ImageTracker
           onNotVisible={(anchor) => setVisible(false)}
@@ -58,7 +71,7 @@ export default function Viewer() {
           targetImage={targetSecond}
         >
           <Suspense fallback={<Loader />}>
-            <Model show={visible} src={dorade} text={doradeTexture} />
+            <Model visible={visible} scale={1} rotation={[0, 90, 0]} />
           </Suspense>
         </ImageTracker>
         <ImageTracker
@@ -68,7 +81,7 @@ export default function Viewer() {
           targetImage={targetFile}
         >
           <Suspense fallback={<Loader />}>
-            <Model show={visible2} src={dorade} text={doradeTexture} />
+            <Model visible={visible2} scale={1} rotation={[0, 90, 0]} />
           </Suspense>
         </ImageTracker>
         <ambientLight intensity={1} />
@@ -82,30 +95,28 @@ function Loader() {
   return <Html center>{progress} % loaded</Html>;
 }
 
-function Model({ src, text, show }: { src: string; text: string; show: boolean }) {
-  const model = useLoader(FBXLoader, src);
-  const texture = useTexture(text);
+// function Model({ src, text, show }: { src: string; text: string; show: boolean }) {
+//   const model = useLoader(GLTFLoader, src);
+//   const texture = useTexture(text);
 
-  if (!show) return null;
+//   if (!show) return null;
 
-  // Assign the texture to the material of the model
-  model.traverse((child) => {
-    // @ts-ignore
-    if (child.isMesh) {
-      // @ts-ignore
-      child.material.map = texture;
-    }
-  });
+//   // Assign the texture to the material of the model
+//   // model.scene.traverse((child) => {
+//   //   if (child instanceof Mesh) {
+//   //     child.material.map = texture;
+//   //   }
+//   // });
 
-  return (
-    <mesh>
-      <primitive
-        object={model}
-        scale={[0.01, 0.01, 0.01]}
-        position={[0, 0, -5]}
-        rotation={[0, 90, 0]}
-      ></primitive>
-      <meshStandardMaterial map={texture} />
-    </mesh>
-  );
-}
+//   return (
+//     <mesh>
+//       <primitive
+//         object={model}
+//         scale={[1, 1, 1]}
+//         position={[0, 0, -5]}
+//         rotation={[0, 90, 0]}
+//       ></primitive>
+//       <meshStandardMaterial map={texture} />
+//     </mesh>
+//   );
+// }
