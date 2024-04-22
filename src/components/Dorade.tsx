@@ -30,7 +30,7 @@ type ContextType = Record<
   >
 >;
 
-export function Model({
+export default function Model({
   visible = false,
   ...props
 }: JSX.IntrinsicElements["group"] & { visible?: boolean }) {

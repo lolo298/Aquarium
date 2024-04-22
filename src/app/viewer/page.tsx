@@ -6,12 +6,8 @@ import type {
   ImageTracker as TTracker,
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
-import { Canvas, Euler, useLoader } from "@react-three/fiber";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { Html, useProgress, useTexture } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { AmbientLight, Mesh } from "three";
-import { Model } from "@/components/Dorade";
+import { Html, useProgress } from "@react-three/drei";
+import Model from "@/components/Dorade";
 import { Stats, OrbitControls } from "@react-three/drei";
 import { useDrag } from "@use-gesture/react";
 let ZapparCamera: typeof TCamera;
@@ -25,10 +21,9 @@ export default function Viewer() {
   const [rotation, setRotation] = useState<[number, number, number]>([0, -90, 0]);
   const [initialPos, setInitialPos] = useState(0);
   const bind = useDrag((state) => {
-    const diff = state.velocity[0] * state.direction[0];
-    const rotation = clamp(diff, -90, 90);
-    console.log(initialPos, diff, rotation);
-    setRotation((prev) => [prev[0], prev[1] + rotation, prev[2]]);
+    const diffX = state.velocity[0] * state.direction[0];
+    const X = clamp(diffX, -90, 90);
+    setRotation((prev) => [prev[0], prev[1] + X, prev[2]]);
   });
 
   ////////////////////////
@@ -77,14 +72,6 @@ export default function Viewer() {
 
   return (
     <>
-      {/* <Canvas>
-        <OrbitControls />
-        <Stats />
-        <camera position={[0, 0, 5]} />
-        <Model />
-
-        <ambientLight intensity={1} />
-      </Canvas> */}
       <ZapparCanvas {...bind()} draggable>
         <OrbitControls />
         <Stats />
