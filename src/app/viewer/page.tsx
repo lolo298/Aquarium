@@ -6,13 +6,14 @@ import type {
   ImageTracker as TTracker,
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, Euler, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { Html, useProgress, useTexture } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { AmbientLight, Mesh } from "three";
 import { Model } from "@/components/Dorade";
 import { Stats, OrbitControls } from "@react-three/drei";
+import { useDrag } from "@use-gesture/react";
 let ZapparCamera: typeof TCamera;
 let ImageTracker: typeof TTracker;
 let ZapparCanvas: typeof TCanvas;
@@ -21,6 +22,15 @@ export default function Viewer() {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [imported, setImported] = useState(false);
+  const [rotation, setRotation] = useState<[number, number, number]>([0, -90, 0]);
+  const [initialPos, setInitialPos] = useState(0);
+  const bind = useDrag((state) => {
+    const diff = state.velocity[0] * state.direction[0];
+    const rotation = clamp(diff, -90, 90);
+    console.log(initialPos, diff, rotation);
+    setRotation((prev) => [prev[0], prev[1] + rotation, prev[2]]);
+  });
+
   ////////////////////////
   //      Markers       //
   ////////////////////////
@@ -49,6 +59,21 @@ export default function Viewer() {
   }, []);
 
   if (!imported) return <h1>Loading...</h1>;
+  const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+
+  function handleDragStart(e: TouchEvent) {
+    const touch = e.touches[0];
+    setInitialPos(touch.screenX);
+  }
+
+  function handleOrbitControl(e: TouchEvent) {
+    console.log(e);
+    const touch = e.touches[0];
+    const diff = touch.screenX - initialPos;
+    const rotation = clamp(diff, -90, 90);
+    console.log(initialPos, diff, rotation);
+    setRotation([0, rotation, 0]);
+  }
 
   return (
     <>
@@ -60,28 +85,34 @@ export default function Viewer() {
 
         <ambientLight intensity={1} />
       </Canvas> */}
-      <ZapparCanvas>
+      <ZapparCanvas {...bind()} draggable>
         <OrbitControls />
         <Stats />
         <ZapparCamera />
         <ImageTracker
-          onNotVisible={(anchor) => setVisible(false)}
+          onNotVisible={(anchor) => {
+            setRotation([0, -90, 0]);
+            setVisible(false);
+          }}
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible(true)}
           targetImage={targetSecond}
         >
           <Suspense fallback={<Loader />}>
-            <Model visible={visible} scale={1} rotation={[0, 90, 0]} />
+            <Model visible={visible} scale={1} rotation={rotation} />
           </Suspense>
         </ImageTracker>
         <ImageTracker
-          onNotVisible={(anchor) => setVisible2(false)}
+          onNotVisible={(anchor) => {
+            setRotation([0, -90, 0]);
+            setVisible2(false);
+          }}
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible2(true)}
           targetImage={targetFile}
         >
           <Suspense fallback={<Loader />}>
-            <Model visible={visible2} scale={1} rotation={[0, 90, 0]} />
+            <Model visible={visible2} scale={1} rotation={rotation} />
           </Suspense>
         </ImageTracker>
         <ambientLight intensity={1} />
