@@ -7,7 +7,9 @@ function App() {
         eius dolor. Perspiciatis voluptatem aspernatur doloremque! Debitis, voluptatem soluta cumque
         veniam necessitatibus blanditiis saepe est doloribus porro?
       </p>
-      <button className="px-16 py-2 bg-tertiary text-white rounded-md">Continuer</button>
+      <a href="/viewer" className="px-16 py-2 bg-tertiary text-white rounded-md">
+        Continuer
+      </a>
     </div>
   );
 }

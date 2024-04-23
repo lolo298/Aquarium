@@ -6,9 +6,10 @@ import type {
   ImageTracker as TTracker,
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
-import { useLoader } from "@react-three/fiber";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { Html, useProgress, useTexture } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
+import Model from "@/components/Dorade";
+import { Stats, OrbitControls } from "@react-three/drei";
+import { useDrag } from "@use-gesture/react";
 let ZapparCamera: typeof TCamera;
 let ImageTracker: typeof TTracker;
 let ZapparCanvas: typeof TCanvas;
@@ -17,6 +18,14 @@ export default function Viewer() {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [imported, setImported] = useState(false);
+  const [rotation, setRotation] = useState<[number, number, number]>([0, -90, 0]);
+  const [initialPos, setInitialPos] = useState(0);
+  const bind = useDrag((state) => {
+    const diffX = state.velocity[0] * state.direction[0];
+    const X = clamp(diffX, -90, 90);
+    setRotation((prev) => [prev[0], prev[1] + X, prev[2]]);
+  });
+
   ////////////////////////
   //      Markers       //
   ////////////////////////
@@ -26,7 +35,7 @@ export default function Viewer() {
   ////////////////////////
   //       Models       //
   ////////////////////////
-  const dorade = "/assets/dorade.fbx";
+  // const dorade = "/assets/dorade.glb";
   const doradeTexture = "/assets/refTexture.png";
 
   useEffect(() => {
@@ -45,30 +54,52 @@ export default function Viewer() {
   }, []);
 
   if (!imported) return <h1>Loading...</h1>;
+  const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+
+  function handleDragStart(e: TouchEvent) {
+    const touch = e.touches[0];
+    setInitialPos(touch.screenX);
+  }
+
+  function handleOrbitControl(e: TouchEvent) {
+    console.log(e);
+    const touch = e.touches[0];
+    const diff = touch.screenX - initialPos;
+    const rotation = clamp(diff, -90, 90);
+    console.log(initialPos, diff, rotation);
+    setRotation([0, rotation, 0]);
+  }
 
   return (
     <>
-      <h1>Viewer</h1>
-      <ZapparCanvas>
+      <ZapparCanvas {...bind()} draggable>
+        <OrbitControls />
+        <Stats />
         <ZapparCamera />
         <ImageTracker
-          onNotVisible={(anchor) => setVisible(false)}
+          onNotVisible={(anchor) => {
+            setRotation([0, -90, 0]);
+            setVisible(false);
+          }}
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible(true)}
           targetImage={targetSecond}
         >
           <Suspense fallback={<Loader />}>
-            <Model show={visible} src={dorade} text={doradeTexture} />
+            <Model visible={visible} scale={1} rotation={rotation} />
           </Suspense>
         </ImageTracker>
         <ImageTracker
-          onNotVisible={(anchor) => setVisible2(false)}
+          onNotVisible={(anchor) => {
+            setRotation([0, -90, 0]);
+            setVisible2(false);
+          }}
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible2(true)}
           targetImage={targetFile}
         >
           <Suspense fallback={<Loader />}>
-            <Model show={visible2} src={dorade} text={doradeTexture} />
+            <Model visible={visible2} scale={1} rotation={rotation} />
           </Suspense>
         </ImageTracker>
         <ambientLight intensity={1} />
@@ -82,30 +113,28 @@ function Loader() {
   return <Html center>{progress} % loaded</Html>;
 }
 
-function Model({ src, text, show }: { src: string; text: string; show: boolean }) {
-  const model = useLoader(FBXLoader, src);
-  const texture = useTexture(text);
+// function Model({ src, text, show }: { src: string; text: string; show: boolean }) {
+//   const model = useLoader(GLTFLoader, src);
+//   const texture = useTexture(text);
 
-  if (!show) return null;
+//   if (!show) return null;
 
-  // Assign the texture to the material of the model
-  model.traverse((child) => {
-    // @ts-ignore
-    if (child.isMesh) {
-      // @ts-ignore
-      child.material.map = texture;
-    }
-  });
+//   // Assign the texture to the material of the model
+//   // model.scene.traverse((child) => {
+//   //   if (child instanceof Mesh) {
+//   //     child.material.map = texture;
+//   //   }
+//   // });
 
-  return (
-    <mesh>
-      <primitive
-        object={model}
-        scale={[0.01, 0.01, 0.01]}
-        position={[0, 0, -5]}
-        rotation={[0, 90, 0]}
-      ></primitive>
-      <meshStandardMaterial map={texture} />
-    </mesh>
-  );
-}
+//   return (
+//     <mesh>
+//       <primitive
+//         object={model}
+//         scale={[1, 1, 1]}
+//         position={[0, 0, -5]}
+//         rotation={[0, 90, 0]}
+//       ></primitive>
+//       <meshStandardMaterial map={texture} />
+//     </mesh>
+//   );
+// }
