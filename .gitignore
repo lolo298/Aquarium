@@ -26,3 +26,8 @@ certificates
 
 .next
 out
+
+build
+coverage
+
+.env.*
