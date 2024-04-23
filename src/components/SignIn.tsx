@@ -1,19 +1,12 @@
 //@ts-nocheck
 import { signIn } from "@/lib/auth";
+import { Button } from "./ui/button";
+import { handleSignIn } from "@/lib/actions";
 
 export function SignIn({ redirectTo }: { redirectTo?: string }) {
-  if (!redirectTo) {
-    redirectTo = "/admin";
-  }
-
-  async function handleSignIn() {
-    "use server";
-    console.log(redirectTo);
-    await signIn("github", { redirectTo });
-  }
   return (
-    <form action={handleSignIn}>
-      <button type="submit">Signin with GitHub</button>
+    <form action={handleSignIn.bind(null, redirectTo)}>
+      <Button type="submit">Signin with GitHub</Button>
     </form>
   );
 }

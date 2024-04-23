@@ -1,14 +1,12 @@
 //@ts-nocheck
 import { signOut } from "@/lib/auth";
+import { Button } from "./ui/button";
+import { handleSignOut } from "@/lib/actions";
 
 export function SignOut() {
-  async function handleSignOut() {
-    "use server";
-    await signOut({ redirectTo: "/admin/login" });
-  }
   return (
     <form action={handleSignOut}>
-      <button type="submit">SignOut</button>
+      <Button type="submit">SignOut</Button>
     </form>
   );
 }
