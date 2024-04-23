@@ -35,7 +35,9 @@ export default function Model({
   ...props
 }: JSX.IntrinsicElements["group"] & { visible?: boolean }) {
   const group = useRef<THREE.Group>();
-  const { nodes, materials, animations } = useGLTF("/assets/dorade.glb") as GLTFResult;
+  const { nodes, materials, animations } = useGLTF(
+    "/assets/dorade.glb",
+  ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
@@ -54,7 +56,11 @@ export default function Model({
     // @ts-ignore
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
-        <group name="ClassiqueARM" position={[0, -0.133, 1.386]} rotation={[-Math.PI / 2, 0, 0]}>
+        <group
+          name="ClassiqueARM"
+          position={[0, -0.133, 1.386]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
           <primitive object={nodes.Bone} />
           <skinnedMesh
             name="Classique"

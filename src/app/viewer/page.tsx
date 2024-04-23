@@ -18,7 +18,9 @@ export default function Viewer() {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [imported, setImported] = useState(false);
-  const [rotation, setRotation] = useState<[number, number, number]>([0, -90, 0]);
+  const [rotation, setRotation] = useState<[number, number, number]>([
+    0, -90, 0,
+  ]);
   const [initialPos, setInitialPos] = useState(0);
   const bind = useDrag((state) => {
     const diffX = state.velocity[0] * state.direction[0];
@@ -54,7 +56,8 @@ export default function Viewer() {
   }, []);
 
   if (!imported) return <h1>Loading...</h1>;
-  const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+  const clamp = (num: number, min: number, max: number) =>
+    Math.min(Math.max(num, min), max);
 
   function handleDragStart(e: TouchEvent) {
     const touch = e.touches[0];

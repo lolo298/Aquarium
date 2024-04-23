@@ -13,7 +13,7 @@ import { Home, Info } from "lucide-react";
 
 export default function Nav() {
   return (
-    <nav className="absolute bottom-0 inset-x-0 flex justify-center gap-16 p-8 bg-primary-foreground">
+    <nav className="absolute inset-x-0 bottom-0 flex justify-center gap-16 bg-primary-foreground p-8">
       <Button>
         <Home />
       </Button>
