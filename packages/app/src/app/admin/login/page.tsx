@@ -1,4 +1,4 @@
-import { SignIn } from "@/components/SignIn";
+import { SignIn } from "@/ui/auth/SignIn";
 import { auth } from "@/lib/auth";
 
 const admin = async () => {

@@ -1,5 +1,5 @@
-import Nav from "@/components/ui/Nav";
-import "./index.css";
+import Nav from "@/ui/components/Nav";
+import "ui/style";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 

@@ -1,6 +1,5 @@
 //@ts-nocheck
-import { signIn } from "@/lib/auth";
-import { Button } from "./ui/button";
+import { Button } from "../components/button";
 import { handleSignIn } from "@/lib/actions";
 
 export function SignIn({ redirectTo }: { redirectTo?: string }) {

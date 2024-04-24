@@ -7,7 +7,7 @@ import type {
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
 import { Html, useProgress } from "@react-three/drei";
-import Model from "@/components/Dorade";
+import Model from "@/ui/three/Dorade";
 import { Stats, OrbitControls } from "@react-three/drei";
 import { useDrag } from "@use-gesture/react";
 let ZapparCamera: typeof TCamera;
@@ -78,7 +78,7 @@ export default function Viewer() {
       <ZapparCanvas {...bind()} draggable>
         <OrbitControls />
         <Stats />
-        <ZapparCamera />
+        <ZapparCamera matrixWorldAutoUpdate={undefined} />
         <ImageTracker
           onNotVisible={(anchor) => {
             setRotation([0, -90, 0]);
@@ -87,6 +87,7 @@ export default function Viewer() {
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible(true)}
           targetImage={targetSecond}
+          matrixWorldAutoUpdate={undefined}
         >
           <Suspense fallback={<Loader />}>
             <Model visible={visible} scale={1} rotation={rotation} />
@@ -100,6 +101,7 @@ export default function Viewer() {
           onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
           onVisible={(anchor) => setVisible2(true)}
           targetImage={targetFile}
+          matrixWorldAutoUpdate={undefined}
         >
           <Suspense fallback={<Loader />}>
             <Model visible={visible2} scale={1} rotation={rotation} />

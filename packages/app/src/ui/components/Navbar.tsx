@@ -1,7 +1,6 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { SignOut } from "../SignOut";
-import { auth } from "@/lib/auth";
-import { Session } from "next-auth";
+import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
+import { SignOut } from "../auth/SignOut";
+import type { Session } from "next-auth";
 
 function Navbar({ session }: { session: Session }) {
   return (
