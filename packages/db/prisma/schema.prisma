@@ -16,12 +16,13 @@ datasource db {
 model File {
   id        String   @id @default(uuid())
   name      String
-  path      String
+  path      String   @unique
   type      FileType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Marker    Marker[] @relation("model")
   Model     Marker[] @relation("marker")
+  Preview   Marker[] @relation("preview")
 }
 
 model Marker {
@@ -29,13 +30,16 @@ model Marker {
   name      String
   model     File     @relation("model", fields: [modelId], references: [id])
   marker    File     @relation("marker", fields: [markerId], references: [id])
+  preview   File     @relation("preview", fields: [previewId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   modelId   String
   markerId  String
+  previewId String
 }
 
 enum FileType {
   MODEL
   MARKER
+  PREVIEW
 }

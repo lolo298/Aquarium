@@ -2,7 +2,12 @@ import { NextRequest } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { exec, spawn } from "child_process";
-import { createMarker, uploadMarker, uploadModel } from "@repo/db";
+import {
+  createMarker,
+  uploadMarker,
+  uploadModel,
+  uploadPreview,
+} from "@repo/db";
 
 export async function POST(req: NextRequest) {
   const data = await req.formData();
@@ -10,8 +15,9 @@ export async function POST(req: NextRequest) {
   const name = data.get("name") as string;
   const marker = data.get("marker") as File;
   const model = data.get("model") as File;
+  const preview = data.get("preview") as File;
 
-  if (!name || !marker || !model) {
+  if (!name || !marker || !model || !preview) {
     return new Response("Missing required fields", { status: 400 });
   }
 
@@ -21,21 +27,39 @@ export async function POST(req: NextRequest) {
     await fs.mkdir("public/uploads");
   }
 
-  const markerPath = `public/uploads/${name}.zpt`;
-  const modelPath = `public/uploads/${name}.glb`;
-
+  const previewPath = `/uploads/${name}${path.extname(preview.name)}`;
+  const markerPath = `/uploads/${name}.zpt`;
+  const modelPath = `/uploads/${name}.glb`;
+  console.log(previewPath);
   try {
     await Promise.all([
-      fs.writeFile(markerPath, Buffer.from(await marker.arrayBuffer())),
-      fs.writeFile(modelPath, Buffer.from(await model.arrayBuffer())),
+      fs.writeFile(
+        `public/${markerPath}`,
+        Buffer.from(await marker.arrayBuffer()),
+      ),
+      fs.writeFile(
+        `public/${modelPath}`,
+        Buffer.from(await model.arrayBuffer()),
+      ),
+      fs.writeFile(
+        `public/${previewPath}`,
+        Buffer.from(await preview.arrayBuffer()),
+      ),
     ]);
 
-    const [dbMarker, dbModel] = await Promise.all([
+    const [dbMarker, dbModel, dbPreview] = await Promise.all([
       uploadMarker({ name, path: markerPath }),
       uploadModel({ name, path: modelPath }),
+      uploadPreview({ name, path: previewPath }),
     ]);
-    await createMarker({ name, marker: dbMarker, model: dbModel });
+    await createMarker({
+      name,
+      marker: dbMarker,
+      model: dbModel,
+      preview: dbPreview,
+    });
   } catch (e) {
+    console.error(e);
     return new Response("Failed to save files", { status: 500 });
   }
 
