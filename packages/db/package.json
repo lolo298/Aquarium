@@ -1,0 +1,27 @@
+{
+  "name": "@repo/db",
+  "private": true,
+  "version": "1.0.0",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "docker compose up -d",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "prisma": "^5.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "@prisma/client": "5.13.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  }
+}

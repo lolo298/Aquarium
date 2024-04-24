@@ -1,5 +1,6 @@
 import { SignIn } from "@/ui/auth/SignIn";
 import { auth } from "@/lib/auth";
+import { getAllMarkers } from "@repo/db";
 
 const admin = async () => {
   const session = await auth();

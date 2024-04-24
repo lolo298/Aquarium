@@ -3,5 +3,12 @@
   "version": "1.0.0",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^1.13.2"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "format": "turbo format"
+  }
 }

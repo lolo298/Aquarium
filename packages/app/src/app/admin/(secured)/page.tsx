@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/ui/components/card";
 import { auth } from "@/lib/auth";
+import { getAllMarkers } from "@repo/db";
 
 const admin = async () => {
   return (
@@ -9,10 +10,12 @@ const admin = async () => {
           <CardHeader>Heya</CardHeader>
           <CardContent>WOOOOOO</CardContent>
         </Card>
-        <Card>
-          <CardHeader>Heya</CardHeader>
-          <CardContent>WOOOOOO</CardContent>
-        </Card>
+        <a href="/admin/markers">
+          <Card>
+            <CardHeader>Actives markers</CardHeader>
+            <CardContent>X actives markers</CardContent>
+          </Card>
+        </a>
       </div>
     </>
   );
