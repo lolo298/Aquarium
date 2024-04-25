@@ -12,6 +12,5 @@
     "dev": "turbo dev",
     "format": "turbo format",
     "build": "turbo build"
-  },
-  "packageManager": "bun@1.0.36"
+  }
 }
