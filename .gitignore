@@ -24,7 +24,7 @@ yarn-error.log*
 .vscode
 .turbo
 certificates
-
+dist
 .next
 out
 

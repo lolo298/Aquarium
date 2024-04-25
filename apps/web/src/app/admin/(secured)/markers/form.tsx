@@ -22,6 +22,7 @@ import {
 } from "@/ui/components/popover";
 import { isClient } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { serverUrl } from "@/lib";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -72,7 +73,7 @@ function FormCmp() {
     formData.append("model", data.model[0]);
     formData.append("preview", data.preview[0]);
 
-    await fetch("/api/upload", {
+    await fetch(`${serverUrl}api/upload`, {
       method: "POST",
       body: formData,
     });
