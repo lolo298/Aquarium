@@ -64,8 +64,8 @@ export async function POST(req: NextRequest) {
 
 async function initFolders() {
   try {
-    await fs.stat("public/uploads");
+    await fs.stat(`${!process.env.VERCEL && "public/"}uploads`);
   } catch (e) {
-    await fs.mkdir("public/uploads");
+    await fs.mkdir(`${!process.env.VERCEL && "public/"}uploads`);
   }
 }
