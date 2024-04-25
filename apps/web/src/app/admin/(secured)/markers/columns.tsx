@@ -25,6 +25,7 @@ import { Checkbox } from "@/ui/components/checkbox";
 import Image from "next/image";
 import Previewer from "@/ui/three/Previewer";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { serverUrl } from "@/lib";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type data = Awaited<ReturnType<typeof getAllMarkers>>[0];
@@ -125,7 +126,7 @@ export function Delete({ marker }: { marker: data }) {
 
   const mutation = useMutation({
     mutationFn: (id: string) =>
-      fetch(`/api/markers/${id}`, { method: "DELETE" }),
+      fetch(`${serverUrl}api/markers/${id}`, { method: "DELETE" }),
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["markers"] });

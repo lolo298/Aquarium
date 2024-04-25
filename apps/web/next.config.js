@@ -15,13 +15,16 @@ module.exports = {
     return config;
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         hostname: "localhost",
       },
       {
-        hostname: "2wovljo9xemmvkkm.public.blob.vercel-storage.com",
+        hostname: "ofnectvdmnyxxznhaagk.supabase.co",
       },
     ],
   },
+  output: "export",
+  distDir: "dist",
 };

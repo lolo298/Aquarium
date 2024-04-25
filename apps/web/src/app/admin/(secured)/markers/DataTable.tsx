@@ -28,18 +28,22 @@ import { TableCaption } from "@/ui/components/table";
 import { getAllMarkers } from "@repo/db";
 import { columns } from "./columns";
 import { Button } from "@/ui/components/button";
+import { serverUrl } from "@/lib";
 
 function TableCmp() {
   const query = useQuery<Awaited<ReturnType<typeof getAllMarkers>>>({
     queryKey: ["markers"],
-    queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
+    queryFn: async () =>
+      await fetch(`${serverUrl}api/markers`).then((res) => res.json()),
   });
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (ids: string[]) => {
       await Promise.all(
-        ids.map((id) => fetch(`/api/markers/${id}`, { method: "DELETE" })),
+        ids.map((id) =>
+          fetch(`${serverUrl}/api/markers/${id}`, { method: "DELETE" }),
+        ),
       );
     },
     onSuccess: () => {

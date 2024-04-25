@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { getAllMarkers } from "@repo/db";
 import type { ObjectMap } from "@react-three/fiber";
 import type { GLTF } from "three-stdlib";
+import { serverUrl } from "@/lib";
 let ZapparCamera: typeof TCamera;
 let ImageTracker: typeof TTracker;
 let ZapparCanvas: typeof TCanvas;
@@ -27,7 +28,8 @@ export default function Viewer() {
   ////////////////////////
   const query = useQuery<Marker[]>({
     queryKey: ["markers"],
-    queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
+    queryFn: async () =>
+      await fetch(`${serverUrl}api/markers`).then((res) => res.json()),
   });
 
   useEffect(() => {

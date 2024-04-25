@@ -1,6 +1,4 @@
 import { Card, CardContent, CardHeader } from "@/ui/components/card";
-import { auth } from "@/lib/auth";
-import { getAllMarkers } from "@repo/db";
 
 const admin = async () => {
   return (
