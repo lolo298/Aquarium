@@ -10,8 +10,8 @@
       "persistent": false
     },
     "build": {
-      "cache": false,
-      "persistent": false
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
     }
   }
 }
