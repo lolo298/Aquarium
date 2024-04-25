@@ -14,4 +14,14 @@ module.exports = {
     });
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "localhost",
+      },
+      {
+        hostname: "nhnayhpb3xxtiysz.public.blob.vercel-storage.com",
+      },
+    ],
+  },
 };

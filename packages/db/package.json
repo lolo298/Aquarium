@@ -5,7 +5,6 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "docker compose up -d",
     "format": "prettier --write .",
     "build": "prisma generate"
   },

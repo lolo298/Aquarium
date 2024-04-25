@@ -1,7 +1,6 @@
 import { NextRequest } from "next/server";
-import fs from "fs/promises";
 import path from "path";
-import { exec, spawn } from "child_process";
+import { write, init } from "@/lib/files";
 import {
   createMarker,
   uploadMarker,
@@ -21,32 +20,32 @@ export async function POST(req: NextRequest) {
     return new Response("Missing required fields", { status: 400 });
   }
 
-  await initFolders();
+  await init();
 
-  const previewPath = `/uploads/${Date.now()}-${name}${path.extname(preview.name)}`;
-  const markerPath = `/uploads/${Date.now()}-${name}.zpt`;
-  const modelPath = `/uploads/${Date.now()}-${name}.glb`;
+  const previewPath = `uploads/${Date.now()}-${name}${path.extname(preview.name)}`;
+  const markerPath = `uploads/${Date.now()}-${name}.zpt`;
+  const modelPath = `uploads/${Date.now()}-${name}.glb`;
 
   try {
-    await Promise.all([
-      fs.writeFile(
-        `public${markerPath}`,
-        Buffer.from(await marker.arrayBuffer()),
-      ),
-      fs.writeFile(
-        `public${modelPath}`,
-        Buffer.from(await model.arrayBuffer()),
-      ),
-      fs.writeFile(
-        `public${previewPath}`,
-        Buffer.from(await preview.arrayBuffer()),
-      ),
+    const [markerUrl, modelUrl, previewUrl] = await Promise.all([
+      write({
+        url: markerPath,
+        content: Buffer.from(await marker.arrayBuffer()),
+      }),
+      write({
+        url: modelPath,
+        content: Buffer.from(await model.arrayBuffer()),
+      }),
+      write({
+        url: previewPath,
+        content: Buffer.from(await preview.arrayBuffer()),
+      }),
     ]);
 
     const [dbMarker, dbModel, dbPreview] = await Promise.all([
-      uploadMarker({ name, path: markerPath }),
-      uploadModel({ name, path: modelPath }),
-      uploadPreview({ name, path: previewPath }),
+      uploadMarker({ name, path: markerUrl }),
+      uploadModel({ name, path: modelUrl }),
+      uploadPreview({ name, path: previewUrl }),
     ]);
     await createMarker({
       name,
@@ -60,12 +59,4 @@ export async function POST(req: NextRequest) {
   }
 
   return new Response("Uploaded successfully", { status: 200 });
-}
-
-async function initFolders() {
-  try {
-    await fs.stat(`${!process.env.VERCEL && "public/"}uploads`);
-  } catch (e) {
-    await fs.mkdir(`${!process.env.VERCEL && "public/"}uploads`);
-  }
 }
