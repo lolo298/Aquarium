@@ -8,6 +8,10 @@
     "format": {
       "cache": false,
       "persistent": false
+    },
+    "build": {
+      "cache": false,
+      "persistent": false
     }
   }
 }

@@ -22,6 +22,7 @@ import {
 import React from "react";
 import { Card, CardHeader, CardContent } from "@/ui/components/card";
 import Image from "next/image";
+import Previewer from "@/ui/three/Previewer";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type data = Awaited<ReturnType<typeof getAllMarkers>>[0];
@@ -82,7 +83,7 @@ export const columns: ColumnDef<data>[] = [
             <DialogHeader>
               <DialogTitle>Preview of {row.original.name}</DialogTitle>
             </DialogHeader>
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               <Card>
                 <CardHeader>Marker</CardHeader>
                 <CardContent className="relative">
@@ -96,7 +97,9 @@ export const columns: ColumnDef<data>[] = [
               </Card>
               <Card>
                 <CardHeader>Model</CardHeader>
-                <CardContent>TODO: Preview</CardContent>
+                <CardContent>
+                  <Previewer modelSrc={row.original.model.path} />
+                </CardContent>
               </Card>
             </div>
           </DialogContent>

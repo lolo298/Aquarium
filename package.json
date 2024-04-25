@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "turbo dev",
-    "format": "turbo format"
+    "format": "turbo format",
+    "build": "turbo build"
   }
 }

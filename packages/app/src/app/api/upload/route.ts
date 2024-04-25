@@ -21,28 +21,24 @@ export async function POST(req: NextRequest) {
     return new Response("Missing required fields", { status: 400 });
   }
 
-  try {
-    await fs.stat("public/uploads");
-  } catch (e) {
-    await fs.mkdir("public/uploads");
-  }
+  await initFolders();
 
-  const previewPath = `/uploads/${name}${path.extname(preview.name)}`;
-  const markerPath = `/uploads/${name}.zpt`;
-  const modelPath = `/uploads/${name}.glb`;
-  console.log(previewPath);
+  const previewPath = `/uploads/${Date.now()}-${name}${path.extname(preview.name)}`;
+  const markerPath = `/uploads/${Date.now()}-${name}.zpt`;
+  const modelPath = `/uploads/${Date.now()}-${name}.glb`;
+
   try {
     await Promise.all([
       fs.writeFile(
-        `public/${markerPath}`,
+        `public${markerPath}`,
         Buffer.from(await marker.arrayBuffer()),
       ),
       fs.writeFile(
-        `public/${modelPath}`,
+        `public${modelPath}`,
         Buffer.from(await model.arrayBuffer()),
       ),
       fs.writeFile(
-        `public/${previewPath}`,
+        `public${previewPath}`,
         Buffer.from(await preview.arrayBuffer()),
       ),
     ]);
@@ -64,4 +60,12 @@ export async function POST(req: NextRequest) {
   }
 
   return new Response("Uploaded successfully", { status: 200 });
+}
+
+async function initFolders() {
+  try {
+    await fs.stat("public/uploads");
+  } catch (e) {
+    await fs.mkdir("public/uploads");
+  }
 }
