@@ -7,12 +7,12 @@ import type {
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
 import { Html, useGLTF, useProgress } from "@react-three/drei";
-// import Model from "@/ui/three/Dorade";
 import { Stats, OrbitControls } from "@react-three/drei";
 import { useDrag } from "@use-gesture/react";
 import { useQuery } from "@tanstack/react-query";
 import type { getAllMarkers } from "@repo/db";
-import Model from "@/ui/three/Dorade";
+import type { ObjectMap } from "@react-three/fiber";
+import type { GLTF } from "three-stdlib";
 let ZapparCamera: typeof TCamera;
 let ImageTracker: typeof TTracker;
 let ZapparCanvas: typeof TCanvas;
@@ -20,34 +20,15 @@ let ZapparCanvas: typeof TCanvas;
 type Marker = Awaited<ReturnType<typeof getAllMarkers>>[0];
 
 export default function Viewer() {
-  const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
   const [imported, setImported] = useState(false);
-  const [rotation, setRotation] = useState<[number, number, number]>([
-    0, -90, 0,
-  ]);
-  const [initialPos, setInitialPos] = useState(0);
-  const bind = useDrag((state) => {
-    const diffX = state.velocity[0] * state.direction[0];
-    const X = clamp(diffX, -90, 90);
-    setRotation((prev) => [prev[0], prev[1] + X, prev[2]]);
-  });
 
   ////////////////////////
   //      Markers       //
   ////////////////////////
-  const targetFile = "/assets/example-tracking-image.zpt";
-  const targetSecond = "/assets/ar-marker-test.zpt";
   const query = useQuery<Marker[]>({
     queryKey: ["markers"],
     queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
-
-  ////////////////////////
-  //       Models       //
-  ////////////////////////
-  // const dorade = "/assets/dorade.glb";
-  const doradeTexture = "/assets/refTexture.png";
 
   useEffect(() => {
     (async () => {
@@ -65,26 +46,10 @@ export default function Viewer() {
   }, []);
 
   if (!imported) return <h1>Loading...</h1>;
-  const clamp = (num: number, min: number, max: number) =>
-    Math.min(Math.max(num, min), max);
-
-  function handleDragStart(e: TouchEvent) {
-    const touch = e.touches[0];
-    setInitialPos(touch.screenX);
-  }
-
-  function handleOrbitControl(e: TouchEvent) {
-    console.log(e);
-    const touch = e.touches[0];
-    const diff = touch.screenX - initialPos;
-    const rotation = clamp(diff, -90, 90);
-    console.log(initialPos, diff, rotation);
-    setRotation([0, rotation, 0]);
-  }
 
   return (
     <>
-      <ZapparCanvas {...bind()} draggable>
+      <ZapparCanvas>
         <OrbitControls />
         <Stats />
         <ZapparCamera matrixWorldAutoUpdate={undefined} />
@@ -129,16 +94,26 @@ function Loader() {
 //     </mesh>
 //   );
 // }
+const clamp = (num: number, min: number, max: number) =>
+  Math.min(Math.max(num, min), max);
 
 function Tracker({ marker }: { marker: Marker }) {
   const [visible, setVisible] = useState(false);
-  const model = useGLTF(marker.model.path);
+  const [rotation, setRotation] = useState<[number, number, number]>([
+    0, -90, 0,
+  ]);
+  const model = useGLTF(marker.model.path) as GLTF & ObjectMap;
 
-  const rotation = [0, -90, 0];
+  const bind = useDrag((state) => {
+    const diffX = state.velocity[0] * state.direction[0];
+    const X = clamp(diffX, -90, 90);
+    setRotation((prev) => [prev[0], prev[1] + X, prev[2]]);
+  });
+
   return (
     <ImageTracker
       onNotVisible={(anchor) => {
-        // setRotation([0, -90, 0]);
+        setRotation([0, -90, 0]);
         setVisible(false);
       }}
       onNewAnchor={(anchor) => console.log(`New anchor ${anchor.id}`)}
@@ -148,7 +123,12 @@ function Tracker({ marker }: { marker: Marker }) {
     >
       <Suspense fallback={<Loader />}>
         {visible && (
-          <primitive object={model.scene} rotation={rotation} scale={1} />
+          <primitive
+            {...bind()}
+            object={model.scene}
+            rotation={rotation}
+            scale={1}
+          />
         )}
       </Suspense>
     </ImageTracker>
