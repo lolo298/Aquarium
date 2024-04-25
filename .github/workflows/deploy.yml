@@ -42,7 +42,9 @@ jobs:
           name: nextApp
           path: apps/web/dist
       - name: Upload to zapworks
-        run: "npx zapworks upload --version 0.1.0 --project 188036643207967500 --dir apps/web/dist"
+        run: |
+          npm i -g @zappar/zapworks-cli
+          zapworks upload --version 0.1.0 --project 188036643207967500 --dir apps/web/dist
   deployServer:
     runs-on: ubuntu-latest
     needs: build
