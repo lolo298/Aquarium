@@ -21,28 +21,59 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import Form from "./form";
 import { TableCaption } from "@/ui/components/table";
 import { getAllMarkers } from "@repo/db";
 import { columns } from "./columns";
+import { Button } from "@/ui/components/button";
 
 function TableCmp() {
   const query = useQuery<Awaited<ReturnType<typeof getAllMarkers>>>({
     queryKey: ["markers"],
     queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
+  const queryClient = useQueryClient();
 
+  const mutation = useMutation({
+    mutationFn: async (ids: string[]) => {
+      await Promise.all(
+        ids.map((id) => fetch(`/api/markers/${id}`, { method: "DELETE" })),
+      );
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["markers"] });
+    },
+  });
+
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: query.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
+
+  const selected = table.getSelectedRowModel().rows;
 
   return (
     <>
       <div className="flex justify-end">
         <Form />
+        <Button
+          variant={"destructive"}
+          disabled={selected.length <= 0}
+          onClick={() =>
+            mutation.mutate(selected.map((row) => row.original.id))
+          }
+        >
+          Delete selected markers
+        </Button>
       </div>
       <Table>
         <TableCaption>A list of actives markers</TableCaption>

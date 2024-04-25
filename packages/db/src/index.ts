@@ -73,3 +73,14 @@ export async function createMarker({
     },
   });
 }
+
+export async function getMarker(id: string) {
+  return client.marker.findUnique({
+    where: { id },
+    include: { model: true, preview: true, marker: true },
+  });
+}
+
+export async function deleteMarker(id: string) {
+  return await client.marker.delete({ where: { id: id } });
+}

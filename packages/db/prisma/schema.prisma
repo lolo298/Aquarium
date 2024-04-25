@@ -28,9 +28,9 @@ model File {
 model Marker {
   id        String   @id @default(uuid())
   name      String
-  model     File     @relation("model", fields: [modelId], references: [id])
-  marker    File     @relation("marker", fields: [markerId], references: [id])
-  preview   File     @relation("preview", fields: [previewId], references: [id])
+  model     File     @relation("model", fields: [modelId], references: [id], onDelete: Cascade)
+  marker    File     @relation("marker", fields: [markerId], references: [id], onDelete: Cascade)
+  preview   File     @relation("preview", fields: [previewId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   modelId   String
