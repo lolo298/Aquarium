@@ -1,0 +1,11 @@
+{
+  "name": "@repo/config",
+  "type": "module",
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "exports": {
+    "./tailwind": "./src/tailwind.ts"
+  }
+}
