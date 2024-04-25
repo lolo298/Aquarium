@@ -51,7 +51,6 @@ export default function Viewer() {
     <>
       <ZapparCanvas>
         <OrbitControls />
-        <Stats />
         <ZapparCamera matrixWorldAutoUpdate={undefined} />
 
         {query.data?.map((marker) => (
