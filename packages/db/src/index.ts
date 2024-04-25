@@ -7,9 +7,6 @@ export async function getAllMarkers() {
 }
 
 export async function uploadMarker({ name, path }: { name: string; path: string }) {
-  if (await client.file.findUnique({ where: { path } })) {
-    throw new Error("File already exists");
-  }
   return client.file.create({
     data: {
       name,
@@ -20,9 +17,6 @@ export async function uploadMarker({ name, path }: { name: string; path: string 
 }
 
 export async function uploadModel({ name, path }: { name: string; path: string }) {
-  if (await client.file.findUnique({ where: { path } })) {
-    throw new Error("File already exists");
-  }
   return client.file.create({
     data: {
       name,
@@ -33,9 +27,6 @@ export async function uploadModel({ name, path }: { name: string; path: string }
 }
 
 export async function uploadPreview({ name, path }: { name: string; path: string }) {
-  if (await client.file.findUnique({ where: { path } })) {
-    throw new Error("File already exists");
-  }
   console.log("uploadPreview", name, path);
   return client.file.create({
     data: {
