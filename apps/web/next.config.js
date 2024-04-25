@@ -20,7 +20,7 @@ module.exports = {
         hostname: "localhost",
       },
       {
-        hostname: "nhnayhpb3xxtiysz.public.blob.vercel-storage.com",
+        hostname: "2wovljo9xemmvkkm.public.blob.vercel-storage.com",
       },
     ],
   },
