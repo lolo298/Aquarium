@@ -1,10 +1,6 @@
 {
   "name": "aquarium_poc",
   "version": "1.0.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "devDependencies": {
     "turbo": "^1.13.2"
   },

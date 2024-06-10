@@ -21,7 +21,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-
     "outDir": "./dist"
-  }
+  },
+  "include": ["src/**/*"],
+  "files": ["src/index.d.ts"]
 }

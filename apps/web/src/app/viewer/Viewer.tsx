@@ -1,12 +1,12 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import type {
   ZapparCamera as TCamera,
   ImageTracker as TTracker,
   ZapparCanvas as TCanvas,
 } from "@zappar/zappar-react-three-fiber";
-import { Html, useGLTF, useProgress } from "@react-three/drei";
+import { Html, useAnimations, useGLTF, useProgress } from "@react-three/drei";
 import { Stats, OrbitControls } from "@react-three/drei";
 import { useDrag } from "@use-gesture/react";
 import { useQuery } from "@tanstack/react-query";
@@ -103,13 +103,24 @@ function Tracker({ marker }: { marker: Marker }) {
   const [rotation, setRotation] = useState<[number, number, number]>([
     0, -90, 0,
   ]);
-  const model = useGLTF(marker.model.path) as GLTF & ObjectMap;
-
+  const group = useRef<THREE.Group>();
+  const { scene, animations } = useGLTF(marker.model.path) as GLTF & ObjectMap;
+  const { actions } = useAnimations(animations, group);
   const bind = useDrag((state) => {
     const diffX = state.velocity[0] * state.direction[0];
     const X = clamp(diffX, -90, 90);
     setRotation((prev) => [prev[0], prev[1] + X, prev[2]]);
   });
+
+  useEffect(() => {
+    if (!visible) return;
+    console.log("Playing animation");
+    const anim = actions?.ArmatureAction!;
+    anim.play();
+    return () => {
+      anim.stop();
+    };
+  }, [actions, visible]);
 
   return (
     <ImageTracker
@@ -125,8 +136,9 @@ function Tracker({ marker }: { marker: Marker }) {
       <Suspense fallback={<Loader />}>
         {visible && (
           <primitive
+            ref={group}
             {...bind()}
-            object={model.scene}
+            object={scene}
             rotation={rotation}
             scale={1}
           />

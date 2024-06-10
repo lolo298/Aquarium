@@ -26,19 +26,12 @@ import { serverUrl } from "@/lib";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
-  preview: z
+  marker: z
     .custom<FileList>()
     .refine((file) => file?.length == 1, "File is required.")
     .refine(
       (file) => file?.[0].type.startsWith("image/"),
       "File must be a valid image",
-    ),
-  marker: z
-    .custom<FileList>()
-    .refine((file) => file?.length == 1, "File is required.")
-    .refine(
-      (file) => file?.[0].name.endsWith(".zpt"),
-      "File must be a valid marker (.zpt)",
     ),
   model: z
     .custom<FileList>()
@@ -71,7 +64,6 @@ function FormCmp() {
     formData.append("name", data.name);
     formData.append("marker", data.marker[0]);
     formData.append("model", data.model[0]);
-    formData.append("preview", data.preview[0]);
 
     await fetch(`${serverUrl}api/upload`, {
       method: "POST",
@@ -81,7 +73,6 @@ function FormCmp() {
 
   const modelRef = form.register("model");
   const markerRef = form.register("marker");
-  const previewRef = form.register("preview");
 
   return (
     <Popover>
@@ -110,26 +101,12 @@ function FormCmp() {
             />
             <FormField
               control={form.control}
-              name="preview"
+              name="marker"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marker preview</FormLabel>
                   <FormControl>
-                    <Input type="file" accept="image/*" {...previewRef} />
-                  </FormControl>
-                  <FormDescription>The Marker preview</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="marker"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Marker</FormLabel>
-                  <FormControl>
-                    <Input type="file" {...markerRef} />
+                    <Input type="file" accept="image/*" {...markerRef} />
                   </FormControl>
                   <FormDescription>The Marker file</FormDescription>
                   <FormMessage />

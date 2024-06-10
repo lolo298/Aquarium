@@ -1,17 +1,20 @@
-import { put, del } from "@vercel/blob";
 import fs from "fs/promises";
 import { supabase } from "./supabase";
+import dotenv from "dotenv";
+dotenv.config();
 
 const bucket = process.env.ENV === "dev" ? "uploadsDev" : "uploads";
 
 let init: () => Promise<void>,
-  write: ({ url, content }: { url: string; content: Buffer }) => Promise<string>,
+  write: ({ url, content }: { url: string; content: Uint8Array }) => Promise<string>,
   unlink: (url: string[]) => Promise<void>,
   read: (url: string) => Promise<Buffer>;
 
 write = async ({ url, content }) => {
   const store = supabase.storage.from(bucket);
-  const { data, error } = await store.upload(url, content);
+  const { data, error } = await store.upload(url, content, {
+    upsert: true,
+  });
   if (error || !data) {
     throw error;
   }

@@ -56,7 +56,7 @@ export const columns: ColumnDef<data>[] = [
     header: "Name",
   },
   {
-    accessorKey: "marker.path",
+    accessorKey: "preview.path",
     header: "Marker",
   },
   {
@@ -100,7 +100,7 @@ export const columns: ColumnDef<data>[] = [
                 <CardHeader>Marker</CardHeader>
                 <CardContent className="relative">
                   <Image
-                    src={data.preview.path}
+                    src={data.marker.path}
                     alt="Marker"
                     width={400}
                     height={400}

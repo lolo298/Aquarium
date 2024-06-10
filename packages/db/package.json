@@ -12,12 +12,12 @@
   "devDependencies": {
     "@types/node": "^20.12.7",
     "prettier": "^3.2.5",
-    "prisma": "^5.13.0",
+    "prisma": "^5.15.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@prisma/client": "5.13.0"
+    "@prisma/client": "5.15.0"
   },
   "exports": {
     ".": {

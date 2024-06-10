@@ -23,7 +23,6 @@ model File {
   updatedAt DateTime @updatedAt
   Marker    Marker[] @relation("model")
   Model     Marker[] @relation("marker")
-  Preview   Marker[] @relation("preview")
 }
 
 model Marker {
@@ -31,16 +30,14 @@ model Marker {
   name      String
   model     File     @relation("model", fields: [modelId], references: [id], onDelete: Cascade)
   marker    File     @relation("marker", fields: [markerId], references: [id], onDelete: Cascade)
-  preview   File     @relation("preview", fields: [previewId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   modelId   String
   markerId  String
-  previewId String
+  fileId    String?
 }
 
 enum FileType {
   MODEL
   MARKER
-  PREVIEW
 }

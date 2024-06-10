@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const client = new PrismaClient();
 
 export async function getAllMarkers() {
-  return client.marker.findMany({ include: { marker: true, model: true, preview: true } });
+  return client.marker.findMany({
+    include: { marker: true, model: true },
+    orderBy: { createdAt: "asc" },
+  });
 }
 
 export async function uploadMarker({ name, path }: { name: string; path: string }) {
@@ -26,27 +29,14 @@ export async function uploadModel({ name, path }: { name: string; path: string }
   });
 }
 
-export async function uploadPreview({ name, path }: { name: string; path: string }) {
-  console.log("uploadPreview", name, path);
-  return client.file.create({
-    data: {
-      name,
-      path,
-      type: "PREVIEW",
-    },
-  });
-}
-
 export async function createMarker({
   name,
   marker,
   model,
-  preview,
 }: {
   name: string;
   marker: Awaited<ReturnType<typeof uploadMarker>>;
   model: Awaited<ReturnType<typeof uploadModel>>;
-  preview: Awaited<ReturnType<typeof uploadPreview>>;
 }) {
   return client.marker.create({
     data: {
@@ -57,9 +47,6 @@ export async function createMarker({
       model: {
         connect: { id: model.id },
       },
-      preview: {
-        connect: { id: preview.id },
-      },
     },
   });
 }
@@ -67,7 +54,7 @@ export async function createMarker({
 export async function getMarker(id: string) {
   return client.marker.findUnique({
     where: { id },
-    include: { model: true, preview: true, marker: true },
+    include: { model: true, marker: true },
   });
 }
 

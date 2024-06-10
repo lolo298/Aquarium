@@ -1,6 +1,5 @@
 import type { Express, Request, Response, Application } from "express";
 import express from "express";
-import dotenv from "dotenv";
 import {
   createMarker,
   deleteMarker,
@@ -8,18 +7,23 @@ import {
   getMarker,
   uploadMarker,
   uploadModel,
-  uploadPreview,
-} from "@repo/db";
+} from "../../../packages/db/src/index";
 import os from "os";
 import formData from "express-form-data";
 import { init, unlink, write } from "./files";
 import path from "path";
-import fs from "fs/promises";
+import fs from "fs";
 import cors from "cors";
-import { supabase } from "./supabase";
+import https from "https";
+import { loadImage } from "canvas";
+import { OfflineCompiler } from "mind-ar/src/image-target/offline-compiler.js";
 
 //For env File
-dotenv.config();
+
+var privateKey = fs.readFileSync("../web/certificates/localhost-key.pem", "utf-8");
+var certificate = fs.readFileSync("../web/certificates/localhost.pem", "utf-8");
+
+var credentials = { key: privateKey, cert: certificate };
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -54,7 +58,7 @@ app.delete("/api/markers/:id", async (req: Request, res: Response) => {
   try {
     const marker = await getMarker(id);
 
-    const paths = [marker?.marker?.path, marker?.preview?.path, marker?.model?.path];
+    const paths = [marker?.marker?.path, marker?.model?.path];
 
     if (paths.some((path) => path === undefined)) {
       return res.status(404).send("File not found");
@@ -84,51 +88,112 @@ interface UploadRequest {
   name: string;
   marker: TFile;
   model: TFile;
-  preview: TFile;
 }
 
 app.post("/api/upload", async (req: Request, res: Response) => {
-  const { name, marker, model, preview } = req.body as UploadRequest;
+  const { name, marker, model } = req.body as UploadRequest;
 
-  const previewPath = `uploads/${Date.now()}-${name}${path.extname(preview.name)}`;
-  const markerPath = `uploads/${Date.now()}-${name}.zpt`;
+  const markerPath = `uploads/${Date.now()}-${name}${path.extname(marker.name)}`;
   const modelPath = `uploads/${Date.now()}-${name}.glb`;
 
   try {
-    const [markerUrl, modelUrl, previewUrl] = await Promise.all([
+    const [markerUrl, modelUrl] = await Promise.all([
       write({
         url: markerPath,
-        content: Buffer.from((await fs.readFile(marker.path)).buffer),
+        content: Buffer.from(fs.readFileSync(marker.path).buffer),
       }),
       write({
         url: modelPath,
-        content: Buffer.from((await fs.readFile(model.path)).buffer),
-      }),
-      write({
-        url: previewPath,
-        content: Buffer.from((await fs.readFile(preview.path)).buffer),
+        content: Buffer.from(fs.readFileSync(model.path).buffer),
       }),
     ]);
 
-    const [dbMarker, dbModel, dbPreview] = await Promise.all([
+    const [dbMarker, dbModel] = await Promise.all([
       uploadMarker({ name, path: markerUrl }),
       uploadModel({ name, path: modelUrl }),
-      uploadPreview({ name, path: previewUrl }),
     ]);
     await createMarker({
       name,
       marker: dbMarker,
       model: dbModel,
-      preview: dbPreview,
     });
   } catch (e) {
     console.error(e);
     return res.send("Failed to save files").status(500);
   }
 
+  await compile();
+
   return res.send("Files saved").status(200);
 });
 
-app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+app.get("/api/compile", async (_, res: Response) => {
+  await compile();
+  res.send("Compiled");
 });
+
+var httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => {
+  console.log(`Server is Fire at https://localhost:${port}`);
+});
+
+async function compile() {
+  const targetPath = `uploads/targets.mind`;
+  const markers = await getAllMarkers();
+  console.log("Compiling...", markers);
+  const images = await Promise.all(markers.map((marker) => loadImage(marker.marker.path)));
+  const tmp = new Tmp();
+  tmp.capture((ogLog, val) => {
+    ogLog("capturing log", val);
+  });
+  try {
+    const compiler = new OfflineCompiler();
+    await compiler.compileImageTargets(images, console.log);
+    const buffer = compiler.exportData();
+    await write({
+      url: targetPath,
+      content: buffer,
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  tmp.release();
+  console.log("Compiled");
+}
+
+class Tmp {
+  #captureLog: boolean;
+  #cb: any;
+  oldLog;
+  public get captureLog() {
+    return this.#captureLog;
+  }
+  public get cb() {
+    return this.#cb;
+  }
+  constructor() {
+    this.#captureLog = false;
+    this.#cb = undefined;
+    this.oldLog = console.log;
+
+    console.log = (...args) => {
+      if (this.captureLog) {
+        this.cb(this.oldLog, args);
+      } else {
+        this.oldLog(...args);
+      }
+    };
+  }
+  capture(cb) {
+    this.oldLog("capturing");
+    this.#captureLog = true;
+    this.#cb = cb;
+  }
+  release() {
+    this.oldLog("releasing");
+    this.#captureLog = false;
+    this.#cb = undefined;
+  }
+}
