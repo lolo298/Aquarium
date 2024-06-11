@@ -2,11 +2,12 @@
   "name": "aquarium_poc",
   "version": "1.0.0",
   "devDependencies": {
-    "turbo": "^1.13.2"
+    "turbo": "^2.0.3"
   },
   "scripts": {
     "dev": "turbo dev",
     "format": "turbo format",
     "build": "turbo build"
-  }
+  },
+  "packageManager": "pnpm@8.15.5"
 }
