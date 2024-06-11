@@ -17,6 +17,7 @@ import cors from "cors";
 import https from "https";
 import { loadImage } from "canvas";
 import { OfflineCompiler } from "mind-ar/src/image-target/offline-compiler.js";
+import { Capture } from "./utils";
 
 //For env File
 
@@ -143,8 +144,8 @@ async function compile() {
   const markers = await getAllMarkers();
   console.log("Compiling...", markers);
   const images = await Promise.all(markers.map((marker) => loadImage(marker.marker.path)));
-  const tmp = new Tmp();
-  tmp.capture((ogLog, val) => {
+  const capture = new Capture();
+  capture.capture((ogLog, val) => {
     ogLog("capturing log", val);
   });
   try {
@@ -159,41 +160,6 @@ async function compile() {
     console.error(e);
   }
 
-  tmp.release();
+  capture.release();
   console.log("Compiled");
-}
-
-class Tmp {
-  #captureLog: boolean;
-  #cb: any;
-  oldLog;
-  public get captureLog() {
-    return this.#captureLog;
-  }
-  public get cb() {
-    return this.#cb;
-  }
-  constructor() {
-    this.#captureLog = false;
-    this.#cb = undefined;
-    this.oldLog = console.log;
-
-    console.log = (...args) => {
-      if (this.captureLog) {
-        this.cb(this.oldLog, args);
-      } else {
-        this.oldLog(...args);
-      }
-    };
-  }
-  capture(cb) {
-    this.oldLog("capturing");
-    this.#captureLog = true;
-    this.#cb = cb;
-  }
-  release() {
-    this.oldLog("releasing");
-    this.#captureLog = false;
-    this.#cb = undefined;
-  }
 }

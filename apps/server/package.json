@@ -9,7 +9,7 @@
     "tsx": "^4.15.1"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
+    "@repo/db": "workspace:^",
     "@supabase/supabase-js": "^2.42.7",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",

@@ -1,13 +1,15 @@
 "use client";
 import { serverUrl } from "@/lib";
-import { Plane, Sphere, useAnimations, useGLTF } from "@react-three/drei";
-import { Canvas, ObjectMap } from "@react-three/fiber";
+import { useAnimations, useGLTF } from "@react-three/drei";
+import { ObjectMap } from "@react-three/fiber";
 import type { getAllMarkers } from "@repo/db";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
-import { useState, useRef, useEffect } from "react";
-import { ARView, ARAnchor } from "react-three-mind";
-import type { GLTF } from "three-stdlib";
+import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from "react";
+import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+const ARView = dynamic(() => import('react-three-mind').then((mod) => mod.ARView), { ssr: false });
+const ARAnchor = dynamic(() => import('react-three-mind').then((mod) => mod.ARAnchor), { ssr: false });
 
 type Marker = Awaited<ReturnType<typeof getAllMarkers>>[0];
 
@@ -30,8 +32,8 @@ export default function Viewer() {
     >
       <ambientLight />
       {query.data?.map((marker, i) => (
-        <ARAnchor target={i}>
-          <Model marker={marker} key={marker.id} />
+        <ARAnchor target={i} key={marker.id}>
+          <Model marker={marker} />
         </ARAnchor>
       ))}
     </ARView>

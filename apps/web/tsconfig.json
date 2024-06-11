@@ -11,6 +11,6 @@
       }
     ]
   },
-  "include": ["src", ".next/types/**/*.ts", "dist/types/**/*.ts"],
+  "include": ["src/**/*.ts", ".next/types/**/*.ts", "dist/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
