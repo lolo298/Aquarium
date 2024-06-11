@@ -6,30 +6,24 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "box-content relative z-0 flex items-center justify-center overflow-hidden rounded-full bg-[linear-gradient(135deg,#00000055,#00000055_40%,#FFFFFF18_60%,#FFFFFF18)] *:z-20 before:absolute before:inset-1 before:rounded-full before:-z-10 after:absolute after:inset-0 after:z-10 after:size-1/2 after:bg-no-repeat",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        default:
+          "before:bg-button-bg-primary hover:before:brightness-95 after:bg-radient-[circle_closest-side] after:from-white/30 text-white after:left-[7%] after:top-[7%]",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "text-button-text-secondary hover:before:brightness-95 before:bg-button-bg-secondary after:bg-radient-[circle_closest-side] after:from-white after:left-[10%] after:top-[10%]",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        sm: "h-9 px-3",
+        lg: "h-11 px-8 py-2",
+        icon: "h-10 w-10 p-2",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "icon",
     },
   },
 );
@@ -37,19 +31,18 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
+  href?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
+  ({ className, variant, size, href, ...props }, ref) => {
+    const Comp = href ? "a" : "button";
+    return React.createElement(Comp, {
+      className: cn(buttonVariants({ variant, size, className })),
+      ref,
+      href,
+      ...props,
+    });
   },
 );
 Button.displayName = "Button";

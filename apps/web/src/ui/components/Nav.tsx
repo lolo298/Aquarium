@@ -13,7 +13,7 @@ import { Button } from "./button";
 
 export default function Nav() {
   return (
-    <nav className="absolute inset-x-0 bottom-0 flex justify-center gap-16 bg-primary-foreground p-8">
+    <nav className="absolute inset-x-0 bottom-0 flex justify-center gap-16  bg-primary-foreground p-8">
       <Button>
         <Home />
       </Button>
