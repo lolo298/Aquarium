@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils";
 import Nav from "@/ui/components/Nav";
 import "@/ui/index.css";
 import { Inter as FontSans } from "next/font/google";
-import { cn } from "@/lib/utils";
 
 const fontSans = FontSans({
   subsets: ["latin"],

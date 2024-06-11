@@ -1,26 +1,26 @@
 "use client";
 
+import { serverUrl } from "@/lib";
 import { Button } from "@/ui/components/button";
 import {
   Form,
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
-  FormDescription,
   FormMessage,
 } from "@/ui/components/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Input } from "@/ui/components/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/ui/components/popover";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { serverUrl } from "@/lib";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),

@@ -1,6 +1,5 @@
-import fs from "fs/promises";
-import { supabase } from "./supabase";
 import dotenv from "dotenv";
+import { supabase } from "./supabase";
 dotenv.config();
 
 const bucket = process.env.ENV === "dev" ? "uploadsDev" : "uploads";
@@ -28,4 +27,4 @@ unlink = async (url) => {
   await supabase.storage.from(bucket).remove(url);
 };
 
-export { init, write, unlink, read };
+export { init, read, unlink, write };

@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 
 function Navbar() {
   return (
