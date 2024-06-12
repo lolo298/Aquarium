@@ -22,7 +22,6 @@
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "node build.js",
     "start": "tsx src/index.ts"
   }
 }
