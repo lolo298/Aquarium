@@ -60,10 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: download server
-        uses: actions/download-artifact@v4
-        with:
-          name: server
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Copy repository contents via scp
         uses: appleboy/scp-action@master
         with:
@@ -82,4 +80,6 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/html/Aquarium/api/
-            pm2 start --name AquariumServer index.js
+            pnpm install
+            cd /var/www/html/Aquarium/api/apps/server
+            pm2 start --name AquariumServer pnpm -- run start
