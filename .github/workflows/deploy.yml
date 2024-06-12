@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          source: "apps/server/dist/"
+          source: "apps/web/dist/"
           target: "/var/www/html/Aquarium/web/"
       # - name: Executing remote command
       #   uses: appleboy/ssh-action@master
