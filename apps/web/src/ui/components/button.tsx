@@ -14,6 +14,8 @@ const buttonVariants = cva(
           "before:bg-button-bg-primary hover:before:brightness-95 after:bg-radient-[circle_closest-side] after:from-white/30 text-white after:left-[7%] after:top-[7%]",
         secondary:
           "text-button-text-secondary hover:before:brightness-95 before:bg-button-bg-secondary after:bg-radient-[circle_closest-side] after:from-white after:left-[10%] after:top-[10%]",
+        destructive: "",
+        ghost: "",
       },
       size: {
         sm: "h-9 px-3",
