@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write .",
-    "build": "prisma generate",
     "postinstall": "prisma generate"
   },
   "devDependencies": {
