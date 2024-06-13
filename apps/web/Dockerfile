@@ -21,7 +21,7 @@ FROM nginx:alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY apps/web/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=build /usr/src/app/apps/web/dist /usr/share/nginx/html
 
