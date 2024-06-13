@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "turbo dev",
     "format": "turbo format",
-    "build": "turbo build"
+    "build": "turbo build",
+    "start:server": "cd apps/server && pnpm run start"
   },
   "packageManager": "pnpm@8.15.5"
 }

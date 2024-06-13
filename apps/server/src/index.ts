@@ -5,6 +5,7 @@ import express from "express";
 import formData from "express-form-data";
 import fs from "fs";
 import https from "https";
+import http from "http";
 import { OfflineCompiler } from "mind-ar/src/image-target/offline-compiler.js";
 import os from "os";
 import path from "path";
@@ -50,6 +51,7 @@ app.use(formData.format());
 app.use(formData.union());
 
 app.get("/api/markers", async (_, res: Response) => {
+  console.log("Getting markers");
   res.json(await getAllMarkers());
 });
 
@@ -133,10 +135,16 @@ app.get("/api/compile", async (_, res: Response) => {
   res.send("Compiled");
 });
 
-var httpsServer = https.createServer(credentials, app);
+// var httpsServer = https.createServer(credentials, app);
 
-httpsServer.listen(port, () => {
-  console.log(`Server is Fire at https://localhost:${port}`);
+// httpsServer.listen(port, () => {
+//   console.log(`Server is Fire at https://localhost:${port}`);
+// });
+
+var httpServer = http.createServer(app);
+
+httpServer.listen(port, () => {
+  console.log(`Server is Fire at http://localhost:${port}`);
 });
 
 async function compile() {

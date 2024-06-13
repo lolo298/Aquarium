@@ -1,0 +1,30 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - aquarium
+    depends_on:
+      - app
+      - server
+  app:
+    image: aquarium/web
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    networks:
+      - aquarium
+  server:
+    image: aquarium/server
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    networks:
+      - aquarium
+
+networks:
+  aquarium:
+    driver: bridge

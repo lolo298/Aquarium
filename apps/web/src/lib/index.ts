@@ -1,3 +1,3 @@
 export const serverUrl = process.env.NEXT_PUBLIC_ENV
-  ? "https://localhost:8000/"
+  ? "http://localhost:8080/"
   : "https://aquarium.lorenzoa.dev/";
