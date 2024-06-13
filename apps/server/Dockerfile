@@ -6,7 +6,7 @@ RUN apk update && apk add build-base g++ cairo-dev pango-dev giflib-dev
 
 RUN npm install -g pnpm
 
-COPY pnpm-lock.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 
 RUN pnpm fetch
 
