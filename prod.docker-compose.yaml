@@ -1,8 +1,6 @@
 services:
   nginx:
     image: nginx:alpine
-    ports:
-      - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
