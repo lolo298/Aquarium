@@ -1,6 +1,5 @@
 "use client";
 
-import { serverUrl } from "@/lib";
 import { Button } from "@/ui/components/button";
 import {
   Form,
@@ -63,7 +62,7 @@ function FormCmp() {
     formData.append("marker", data.marker[0]);
     formData.append("model", data.model[0]);
 
-    await fetch(`${serverUrl}api/upload`, {
+    await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
@@ -75,7 +74,7 @@ function FormCmp() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button>Add new marker</Button>
+        <Button size="sm">Add new marker</Button>
       </PopoverTrigger>
       <PopoverContent>
         <Form {...form}>

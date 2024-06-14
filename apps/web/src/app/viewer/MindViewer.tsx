@@ -1,23 +1,27 @@
 "use client";
-import { serverUrl } from "@/lib";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { ObjectMap } from "@react-three/fiber";
 import type { getAllMarkers } from "@repo/db";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-const ARView = dynamic(() => import('react-three-mind').then((mod) => mod.ARView), { ssr: false });
-const ARAnchor = dynamic(() => import('react-three-mind').then((mod) => mod.ARAnchor), { ssr: false });
+const ARView = dynamic(
+  () => import("react-three-mind").then((mod) => mod.ARView),
+  { ssr: false },
+);
+const ARAnchor = dynamic(
+  () => import("react-three-mind").then((mod) => mod.ARAnchor),
+  { ssr: false },
+);
 
 type Marker = Awaited<ReturnType<typeof getAllMarkers>>[0];
 
 export default function Viewer() {
   const query = useQuery<Marker[]>({
     queryKey: ["markers"],
-    queryFn: async () =>
-      await fetch(`${serverUrl}api/markers`).then((res) => res.json()),
+    queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
 
   return (

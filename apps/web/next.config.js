@@ -15,7 +15,7 @@ module.exports = {
     return config;
   },
   images: {
-    unoptimized: true,
+    unoptimized: false,
     remotePatterns: [
       {
         hostname: "localhost",
@@ -25,6 +25,5 @@ module.exports = {
       },
     ],
   },
-  output: "export",
   distDir: "dist",
 };

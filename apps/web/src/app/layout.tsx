@@ -23,7 +23,7 @@ export default function RootLayout({
         )}
       >
         <Header />
-        {children}
+        <main className="flex-[10]">{children}</main>
         <Nav />
       </body>
     </html>

@@ -1,8 +1,6 @@
-import dotenv from "dotenv";
 import { supabase } from "./supabase";
-dotenv.config();
 
-const bucket = process.env.ENV === "dev" ? "uploadsDev" : "uploads";
+const bucket = process.env.NEXT_PUBLIC_ENV === "dev" ? "uploadsDev" : "uploads";
 
 let init: () => Promise<void>,
   write: ({ url, content }: { url: string; content: Uint8Array }) => Promise<string>,

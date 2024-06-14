@@ -21,7 +21,6 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-import { serverUrl } from "@/lib";
 import { Button } from "@/ui/components/button";
 import { TableCaption } from "@/ui/components/table";
 import { getAllMarkers } from "@repo/db";
@@ -33,17 +32,14 @@ import Form from "./form";
 function TableCmp() {
   const query = useQuery<Awaited<ReturnType<typeof getAllMarkers>>>({
     queryKey: ["markers"],
-    queryFn: async () =>
-      await fetch(`${serverUrl}api/markers`).then((res) => res.json()),
+    queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async (ids: string[]) => {
       await Promise.all(
-        ids.map((id) =>
-          fetch(`${serverUrl}/api/markers/${id}`, { method: "DELETE" }),
-        ),
+        ids.map((id) => fetch(`/api/markers/${id}`, { method: "DELETE" })),
       );
     },
     onSuccess: () => {
@@ -70,7 +66,9 @@ function TableCmp() {
       <div className="flex justify-end">
         <Form />
         <Button
-          variant={"destructive"}
+          // variant={"destructive"}
+          variant="secondary"
+          size="sm"
           disabled={selected.length <= 0}
           onClick={() =>
             mutation.mutate(selected.map((row) => row.original.id))

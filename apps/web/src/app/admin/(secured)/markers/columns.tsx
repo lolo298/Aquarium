@@ -1,6 +1,5 @@
 "use client";
 
-import { serverUrl } from "@/lib";
 import { Button } from "@/ui/components/button";
 import { Card, CardContent, CardHeader } from "@/ui/components/card";
 import { Checkbox } from "@/ui/components/checkbox";
@@ -126,7 +125,7 @@ export function Delete({ marker }: { marker: data }) {
 
   const mutation = useMutation({
     mutationFn: (id: string) =>
-      fetch(`${serverUrl}api/markers/${id}`, { method: "DELETE" }),
+      fetch(`/api/markers/${id}`, { method: "DELETE" }),
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["markers"] });
