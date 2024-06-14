@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/components/dropdown-menu";
 import Previewer from "@/ui/three/Previewer";
-import { getAllMarkers } from "@repo/db";
+import type { getAllMarkers } from "@repo/db";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Trash } from "lucide-react";

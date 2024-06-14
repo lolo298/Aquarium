@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
 
 import { Button } from "@/ui/components/button";
 import { TableCaption } from "@/ui/components/table";
-import { getAllMarkers } from "@repo/db";
+import type { getAllMarkers } from "@repo/db";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { columns } from "./columns";
