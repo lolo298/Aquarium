@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --experimental-https",
     "build": "next build",
-    "start": "serve --ssl-cert ./certificates/localhost.pem --ssl-key ./certificates/localhost-key.pem out",
+    "start": "serve dist",
     "lint": "next lint",
     "format": "prettier --write ."
   },
