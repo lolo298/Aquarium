@@ -15,6 +15,7 @@
     "start": "cd apps/web && pnpm run start",
     "postinstall": "./setup.sh"
   },
+  "packageManager": "npm@10.5.0",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   }
