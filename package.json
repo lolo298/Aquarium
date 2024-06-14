@@ -11,5 +11,8 @@
     "start": "cd apps/web && pnpm run start",
     "postinstall": "cp .env apps/web/.env 2> /dev/null || :"
   },
-  "packageManager": "pnpm@8.15.5"
+  "packageManager": "pnpm@8.15.5",
+  "dependencies": {
+    "canvas": "^2.11.2"
+  }
 }
