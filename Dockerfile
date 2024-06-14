@@ -4,11 +4,9 @@ WORKDIR /usr/src/app
 
 RUN apk update && apk add build-base g++ cairo-dev pango-dev giflib-dev
 
-COPY package.json package-lock.json ./
+COPY . ./
 
 RUN npm ci
-
-COPY . ./
 
 RUN npm i -w web canvas --build-from-source
 
