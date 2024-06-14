@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 RUN apk update && apk add build-base g++ cairo-dev pango-dev giflib-dev
 
-COPY package-lock.json ./
+COPY package.json package-lock.json ./
 
 RUN npm ci
 
