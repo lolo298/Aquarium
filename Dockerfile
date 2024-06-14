@@ -15,12 +15,14 @@ RUN npm i -w web canvas --build-from-source
 RUN npm run build
 
 
-FROM nginx:alpine
+FROM node:alpine
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /usr/src/app
 
-COPY apps/web/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/apps/web/dist ./
 
-COPY --from=build /usr/src/app/apps/web/dist /usr/share/nginx/html
+RUN npm install -g next
 
 EXPOSE 80
+
+CMD ["next", "start", "-p", "80"]
