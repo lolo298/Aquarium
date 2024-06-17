@@ -1,2 +1,4 @@
 public/uploads
 certificates
+public/sw.js
+public/workbox-*.js

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Aquarium ARcade",
+  "name": "Aquarium ARcade",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,8 +8,22 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "screenshots": [
+    {
+      "src": "dorade.jpg",
+      "sizes": "945x945",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    },
+    {
+      "src": "dorade.jpg",
+      "sizes": "945x945",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation": "portrait"
 }
