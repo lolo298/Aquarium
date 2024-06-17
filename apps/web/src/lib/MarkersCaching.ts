@@ -1,6 +1,6 @@
 import type { StrategyHandler } from "serwist";
 import { Strategy } from "serwist";
-import type { getAllMarkers } from "@repo/db";
+import { bucket, type getAllMarkers } from "@repo/db";
 
 export class Markers extends Strategy {
   protected async _handle(
@@ -32,7 +32,7 @@ export class Markers extends Strategy {
         [
           handler.fetchAndCachePut(
             new Request(
-              "https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/uploadsDev/uploads/targets.mind",
+              `https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/${bucket}/uploads/targets.mind`,
             ),
           ),
         ] as Promise<Response>[],

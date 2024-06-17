@@ -1,7 +1,7 @@
 "use client";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { ObjectMap } from "@react-three/fiber";
-import type { getAllMarkers } from "@repo/db";
+import { bucket, type getAllMarkers } from "@repo/db";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
 import dynamic from "next/dynamic";
@@ -26,7 +26,7 @@ export default function Viewer() {
 
   return (
     <ARView
-      imageTargets="https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/uploadsDev/uploads/targets.mind"
+      imageTargets={`https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/${bucket}/uploads/targets.mind`}
       filterMinCF={1}
       filterBeta={10000}
       missTolerance={0}
