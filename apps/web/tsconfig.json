@@ -1,11 +1,20 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["@serwist/next/typings"],
-    "lib": ["webworker", "dom", "dom.iterable", "esnext"],
+    "types": [
+      "@serwist/next/typings"
+    ],
+    "lib": [
+      "webworker",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "plugins": [
       {
@@ -14,6 +23,12 @@
     ],
     "jsx": "preserve"
   },
-  "include": ["src/**/*.ts", ".next/types/**/*.ts", "dist/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts",
+    ".next/types/**/*.ts",
+    "dist/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

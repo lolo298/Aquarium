@@ -1,6 +1,8 @@
 import type { StrategyHandler } from "serwist";
 import { Strategy } from "serwist";
-import { bucket, type getAllMarkers } from "@repo/db";
+import type { getAllMarkers } from "@repo/db";
+
+const bucket = process.env.NEXT_PUBLIC_ENV === "dev" ? "uploadsDev" : "uploads";
 
 export class Markers extends Strategy {
   protected async _handle(
