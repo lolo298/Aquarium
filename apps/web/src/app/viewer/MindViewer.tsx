@@ -1,7 +1,8 @@
 "use client";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { ObjectMap } from "@react-three/fiber";
-import { bucket, type getAllMarkers } from "@repo/db";
+import type { getAllMarkers } from "@repo/db";
+import { bucket } from "@repo/db/env";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
 import dynamic from "next/dynamic";

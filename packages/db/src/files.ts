@@ -1,6 +1,5 @@
 import { supabase } from "./supabase";
-
-export const bucket = process.env.NEXT_PUBLIC_ENV === "dev" ? "uploadsDev" : "uploads";
+import { bucket } from "./env";
 
 let init: () => Promise<void>,
   write: ({ url, content }: { url: string; content: Uint8Array }) => Promise<string>,

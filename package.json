@@ -12,8 +12,7 @@
     "dev": "turbo dev",
     "format": "turbo format",
     "build": "turbo build",
-    "start": "cd apps/web && npm run start",
-    "postinstall": "./setup.sh"
+    "start": "cd apps/web && npm run start"
   },
   "packageManager": "npm@10.5.0",
   "engines": {
