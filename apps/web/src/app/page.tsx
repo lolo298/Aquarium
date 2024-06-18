@@ -14,7 +14,7 @@ function App() {
 
     const afterInstallHandler = () => {
       //open app with protocol web+aquariumarcade
-      window.location.href = "web+aquariumarcade://";
+      window.open(`https://${process.env.COOLIFY_URL ?? "localhost"}/app`);
     };
 
     //@ts-expect-error
