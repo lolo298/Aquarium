@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/ui/components/button";
 
 function App() {
@@ -11,18 +10,12 @@ function App() {
         doloremque! Debitis, voluptatem soluta cumque veniam necessitatibus
         blanditiis saepe est doloribus porro?
       </p>
-      {/* <Button
+      <Button
         href="/viewer"
         size="lg"
         className="bg-[linear-gradient(to_bottom,#00000055,#00000055_40%,#FFFFFF88_60%,#FFFFFF88)]"
       >
         Continuer
-      </Button> */}
-      <Button
-        size="lg"
-        className="bg-[linear-gradient(to_bottom,#00000055,#00000055_40%,#FFFFFF88_60%,#FFFFFF88)]"
-      >
-        Install
       </Button>
     </div>
   );

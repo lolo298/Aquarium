@@ -1,6 +1,6 @@
 import type { StrategyHandler } from "serwist";
 import { Strategy } from "serwist";
-import type { getAllMarkers } from "@repo/db";
+import type { Markers as MarkersType } from "@/types";
 
 const bucket = process.env.NEXT_PUBLIC_ENV === "dev" ? "uploadsDev" : "uploads";
 
@@ -9,9 +9,7 @@ export class Markers extends Strategy {
     request: Request,
     handler: StrategyHandler,
   ): Promise<Response | undefined> {
-    const data: Awaited<ReturnType<typeof getAllMarkers>> = await fetch(
-      request.url,
-    )
+    const data: MarkersType = await fetch(request.url)
       .then((res) => res.json())
       .catch((err) => {
         return undefined;

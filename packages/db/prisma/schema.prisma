@@ -35,9 +35,34 @@ model Marker {
   modelId   String
   markerId  String
   fileId    String?
+  Entity    Entity[]
 }
 
 enum FileType {
   MODEL
   MARKER
+}
+
+model Entity {
+  id          String   @id @default(uuid())
+  names       String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Marker      Marker   @relation(fields: [markerId], references: [id])
+  markerId    String
+  description String?
+
+  OtherNames OtherName[]
+  long       Float?
+  food       String?
+}
+
+model OtherName {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Entity    Entity   @relation(fields: [entityId], references: [id])
+  entityId  String
+  name      String
+  language  String
 }

@@ -4,6 +4,7 @@ import Header from "@/ui/components/Header";
 import "@/ui/index.css";
 import { Inter as FontSans } from "next/font/google";
 import { Metadata } from "next/types";
+import Providers from "./Providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -47,9 +48,11 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Header />
-        <main className="flex-[10]">{children}</main>
-        <Nav />
+        <Providers>
+          <Header />
+          <main className="flex-[10]">{children}</main>
+          <Nav />
+        </Providers>
       </body>
     </html>
   );

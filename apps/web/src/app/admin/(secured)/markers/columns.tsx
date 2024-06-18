@@ -1,5 +1,6 @@
 "use client";
 
+import { Markers } from "@/types";
 import { Button } from "@/ui/components/button";
 import { Card, CardContent, CardHeader } from "@/ui/components/card";
 import { Checkbox } from "@/ui/components/checkbox";
@@ -19,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/components/dropdown-menu";
 import Previewer from "@/ui/three/Previewer";
-import type { getAllMarkers } from "@repo/db";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Trash } from "lucide-react";
@@ -27,7 +27,7 @@ import Image from "next/image";
 import React from "react";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type data = Awaited<ReturnType<typeof getAllMarkers>>[0];
+export type data = Markers[0];
 
 export const columns: ColumnDef<data>[] = [
   {

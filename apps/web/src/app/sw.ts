@@ -1,6 +1,8 @@
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { CacheFirst, Serwist } from "serwist";
+import { CacheFirst, Serwist, StaleWhileRevalidate } from "serwist";
 import { Markers } from "@/lib/MarkersCaching";
+import { cacheNames, clientsClaim } from "@serwist/core";
+import { skip } from "node:test";
 
 // This declares the value of `injectionPoint` to TypeScript.
 // `injectionPoint` is the string that will be replaced by the
@@ -26,7 +28,7 @@ const serwist = new Serwist({
     },
     {
       matcher: /.*/i,
-      handler: new CacheFirst(),
+      handler: new StaleWhileRevalidate(),
     },
   ],
 });

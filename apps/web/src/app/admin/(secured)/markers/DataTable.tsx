@@ -23,14 +23,14 @@ interface DataTableProps<TData, TValue> {
 
 import { Button } from "@/ui/components/button";
 import { TableCaption } from "@/ui/components/table";
-import type { getAllMarkers } from "@repo/db";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { columns } from "./columns";
 import Form from "./form";
+import { Markers } from "@/types";
 
 function TableCmp() {
-  const query = useQuery<Awaited<ReturnType<typeof getAllMarkers>>>({
+  const query = useQuery<Markers>({
     queryKey: ["markers"],
     queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });

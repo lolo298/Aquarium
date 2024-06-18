@@ -1,7 +1,7 @@
 "use client";
+import { Markers } from "@/types";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { ObjectMap } from "@react-three/fiber";
-import type { getAllMarkers } from "@repo/db";
 import { bucket } from "@repo/db/env";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
@@ -17,7 +17,7 @@ const ARAnchor = dynamic(
   { ssr: false },
 );
 
-type Marker = Awaited<ReturnType<typeof getAllMarkers>>[0];
+type Marker = Markers[0];
 
 export default function Viewer() {
   const query = useQuery<Marker[]>({
