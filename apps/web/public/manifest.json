@@ -49,6 +49,11 @@
       "sizes": "945x945",
       "type": "image/jpeg",
       "form_factor": "wide"
+    },
+    {
+      "src": "dorade.jpg",
+      "sizes": "945x945",
+      "type": "image/jpeg"
     }
   ],
   "start_url": "/app",
