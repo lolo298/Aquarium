@@ -3,6 +3,12 @@
   "name": "Aquarium ARcade",
   "description": "Aquarium ARcade is a fun and educational augmented reality game that lets you create your own virtual aquarium and learn about marine life.",
   "id": "com.aquariumarcade",
+  "protocol_handlers": [
+    {
+      "protocol": "web+aquariumarcade",
+      "url": "/app"
+    }
+  ],
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

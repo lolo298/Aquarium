@@ -1,20 +1,30 @@
-//@ts-nocheck
 "use client";
+import { BeforeInstallPromptEvent } from "@/types";
 import { Button } from "@/ui/components/button";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [installPrompt, setInstallPrompt] = useState(null);
+  const [installPrompt, setInstallPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   useEffect(() => {
-    const handler = (e) => {
+    const installHandler = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setInstallPrompt(e);
     };
 
-    window.addEventListener("beforeinstallprompt", handler);
+    const afterInstallHandler = () => {
+      //open app with protocol web+aquariumarcade
+      window.location.href = "web+aquariumarcade://";
+    };
+
+    //@ts-expect-error
+    window.addEventListener("beforeinstallprompt", installHandler);
+    window.addEventListener("appinstalled", afterInstallHandler);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
+      //@ts-expect-error
+      window.removeEventListener("beforeinstallprompt", installHandler);
+      window.removeEventListener("appinstalled", afterInstallHandler);
     };
   }, []);
 
@@ -38,8 +48,7 @@ function App() {
         size="lg"
         className="bg-[linear-gradient(to_bottom,#00000055,#00000055_40%,#FFFFFF88_60%,#FFFFFF88)]"
         onClick={async () => {
-          const result = await installPrompt?.prompt();
-          console.log("result", result);
+          await installPrompt?.prompt();
         }}
       >
         Install
