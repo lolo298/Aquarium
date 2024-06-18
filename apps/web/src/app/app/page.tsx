@@ -5,10 +5,11 @@ function App() {
     <div className="flex h-full w-full flex-[10] flex-col items-center justify-center gap-16 bg-secondary text-center">
       <h2 className="text-4xl font-bold">Bienvenue sur Aquarium ARcade</h2>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed ratione
-        soluta libero quasi eius dolor. Perspiciatis voluptatem aspernatur
-        doloremque! Debitis, voluptatem soluta cumque veniam necessitatibus
-        blanditiis saepe est doloribus porro?
+        Plongez dans un univers sous-marin fascinant et découvrez toutes les
+        espèces de poissons que cachent les côtes d'Armor... Trouvez-les dans
+        l'aquarium, jouez avec eux, découvrez leur mode de vie et peut-être
+        qu'ils vous feront assez confiance pour que vous puissiez les nourrir !
+        Une expérience instructive et ludique en réalité augmentée !
       </p>
       <Button
         href="/viewer"
