@@ -6,7 +6,7 @@
   "protocol_handlers": [
     {
       "protocol": "web+aquariumarcade",
-      "url": "/app"
+      "url": "/app?target=%s"
     }
   ],
   "icons": [
