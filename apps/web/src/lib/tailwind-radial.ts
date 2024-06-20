@@ -1,5 +1,6 @@
 import plugin from "tailwindcss/plugin";
 
+// tailwind plugin to add radial gradient utility classes
 export default plugin(
   function ({ matchUtilities, theme }) {
     matchUtilities(

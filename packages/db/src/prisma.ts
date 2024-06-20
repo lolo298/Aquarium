@@ -1,5 +1,9 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
+/*
+ * Create a prisma client to interact with the database
+ */
+
 function createClient() {
   return new PrismaClient();
 }
@@ -8,6 +12,7 @@ declare const globalThis: {
   prismaGlobal: ReturnType<typeof createClient>;
 } & typeof global;
 
+// create a singleton prisma client
 const client = globalThis.prismaGlobal ?? createClient();
 if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = client;
 

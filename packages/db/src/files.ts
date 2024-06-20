@@ -1,11 +1,11 @@
 import { supabase } from "./supabase";
 import { bucket } from "./env";
 
-let init: () => Promise<void>,
-  write: ({ url, content }: { url: string; content: Uint8Array }) => Promise<string>,
-  unlink: (url: string[]) => Promise<void>,
-  read: (url: string) => Promise<Buffer>;
-
+let write: ({ url, content }: { url: string; content: Uint8Array }) => Promise<string>,
+  unlink: (url: string[]) => Promise<void>;
+/**
+ * Write a file to the storage bucket and return the public url
+ */
 write = async ({ url, content }) => {
   const store = supabase.storage.from(bucket);
   const { data, error } = await store.upload(url, content, {
@@ -18,10 +18,11 @@ write = async ({ url, content }) => {
   return store.getPublicUrl(data.path).data.publicUrl;
 };
 
-init = async () => {};
-
+/**
+ * delete a file from the storage bucket
+ */
 unlink = async (url) => {
   await supabase.storage.from(bucket).remove(url);
 };
 
-export { init, read, unlink, write };
+export { unlink, write };

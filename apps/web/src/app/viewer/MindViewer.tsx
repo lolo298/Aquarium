@@ -5,27 +5,21 @@ import { ObjectMap } from "@react-three/fiber";
 import { bucket } from "@repo/db/env";
 import { useQuery } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
-import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-const ARView = dynamic(
-  () => import("react-three-mind").then((mod) => mod.ARView),
-  { ssr: false },
-);
-const ARAnchor = dynamic(
-  () => import("react-three-mind").then((mod) => mod.ARAnchor),
-  { ssr: false },
-);
+import { ARView, ARAnchor } from "react-three-mind";
 
 type Marker = Markers[0];
 
 export default function Viewer() {
+  // get the markers data
   const query = useQuery<Marker[]>({
     queryKey: ["markers"],
     queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
 
   return (
+    // Instantiate the ARView component with the target compiled from the bucket
     <ARView
       imageTargets={`https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/${bucket}/uploads/targets.mind`}
       filterMinCF={1}
@@ -36,6 +30,7 @@ export default function Viewer() {
       className="inset-0 [&>*:first-child]:absolute [&>*:first-child]:inset-0 [&>*:first-child]:z-10 "
     >
       <ambientLight />
+      {/* Create an anchor for every markers in db */}
       {query.data?.map((marker, i) => (
         <ARAnchor target={i} key={marker.id}>
           <Model marker={marker} />
@@ -56,6 +51,7 @@ function Model({ marker }: { marker: Marker }) {
   const { scene, animations } = useGLTF(marker.model.path) as GLTF & ObjectMap;
   const { actions } = useAnimations(animations, group);
 
+  // Allow rotation of the model on touch
   const bind = useDrag((state) => {
     const diffX = state.velocity[0] * state.direction[0];
     const X = clamp(diffX, -90, 90);
@@ -64,7 +60,8 @@ function Model({ marker }: { marker: Marker }) {
 
   useEffect(() => {
     console.log("Playing animation");
-    const anim = actions?.ArmatureAction!;
+    const anim = actions?.ArmatureAction;
+    if (!anim) return;
     anim.play();
     return () => {
       anim.stop();
@@ -80,5 +77,4 @@ function Model({ marker }: { marker: Marker }) {
       scale={1}
     />
   );
-  // return <Sphere args={[1, 32, 32]} />;
 }

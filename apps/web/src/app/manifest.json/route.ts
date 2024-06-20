@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllMarkers } from "@repo/db";
 
 export const dynamic = "force-static";
 

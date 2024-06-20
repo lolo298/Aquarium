@@ -20,11 +20,7 @@ export async function DELETE(
       marker?.model?.path,
       marker?.preview?.path,
     ];
-
-    // if (paths.some((path) => path === undefined)) {
-    //   return new NextResponse("File not found", { status: 404 });
-    // }
-
+    // Delete the files from the storage bucket
     await unlink(paths as string[]);
 
     await deleteMarker(id);

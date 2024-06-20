@@ -30,12 +30,14 @@ import Form from "./form";
 import { Markers } from "@/types";
 
 function TableCmp() {
+  // Get the data
   const query = useQuery<Markers>({
     queryKey: ["markers"],
     queryFn: async () => await fetch("/api/markers").then((res) => res.json()),
   });
   const queryClient = useQueryClient();
 
+  // The row deletion mutation
   const mutation = useMutation({
     mutationFn: async (ids: string[]) => {
       await Promise.all(

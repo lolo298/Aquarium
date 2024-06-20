@@ -1,9 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
 import MarkersView from "./Markers";
-import { HydrationBoundary, dehydrate, useQuery } from "@tanstack/react-query";
-import { getQueryClient } from "@/lib/query";
-import { Markers } from "@/types";
 import {
   draggedFishAtom,
   dropZoneAtom,
@@ -24,6 +21,7 @@ export default function Page() {
   const [dropZone, setDropZone] = useAtom(dropZoneAtom);
   const [markersData, setMarkersData] = useAtom(markersDataAtom);
 
+  // Make the fish image follow the touch position
   useEffect(() => {
     if (!draggingRef.current) return;
     draggingRef.current.style.left = `${touchPosition[0]}px`;
@@ -40,6 +38,7 @@ export default function Page() {
         onTouchEnd={(e) => {
           e.preventDefault();
           if (dropZone && draggedFish) {
+            // Add the dropped fish to the markersData
             const olds = markersData.filter((m) => m.id !== draggedFish?.id);
             setMarkersData([
               ...olds,
@@ -59,7 +58,7 @@ export default function Page() {
 
         {draggedFish && (
           <Image
-            src={draggedFish.preview!.path}
+            src={draggedFish.preview.path}
             alt={draggedFish.name}
             width={100}
             height={100}

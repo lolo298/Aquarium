@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import Nav from "@/ui/components/Nav";
 import Header from "@/ui/components/Header";
 import "@/ui/index.css";
 import { Inter as FontSans } from "next/font/google";

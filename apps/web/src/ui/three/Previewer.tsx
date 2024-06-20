@@ -1,6 +1,9 @@
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
+/*
+ * The 3D previewer in the admin panel
+ */
 function Previewer({ modelSrc }: { modelSrc: string }) {
   const model = useGLTF(modelSrc);
   return (

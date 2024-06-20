@@ -7,11 +7,13 @@ function App() {
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   useEffect(() => {
+    // prevent the default chrome install prompt for the pwa
     const installHandler = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setInstallPrompt(e);
     };
 
+    //open app after installation
     const afterInstallHandler = () => {
       //open app with protocol web+aquariumarcade
       window.open(

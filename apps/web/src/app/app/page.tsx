@@ -1,5 +1,6 @@
 import { Button } from "@/ui/components/button";
 
+// Installed app entrypoint
 function App() {
   return (
     <div className="flex h-full w-full flex-[10] flex-col items-center justify-center gap-16 bg-secondary text-center">

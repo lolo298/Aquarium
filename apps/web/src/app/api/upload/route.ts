@@ -7,7 +7,6 @@ import {
 } from "@repo/db";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
-import fs from "fs/promises";
 import { compile } from "@/lib/mind";
 
 interface TFile {
@@ -30,6 +29,7 @@ interface UploadRequest {
 let abortController = new AbortController();
 
 export async function POST(req: NextRequest) {
+  // abort ongoing compilation
   abortController.abort();
   abortController = new AbortController();
 
@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
   const modelPath = `uploads/models/${Date.now()}-${name}.glb`;
 
   try {
+    // Save the files to the storage bucket
     const [markerUrl, modelUrl, previewUrl] = await Promise.all([
       write({
         url: markerPath,
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
+    // Save the files to the database
     const [dbMarker, dbModel, dbPreview] = await Promise.all([
       uploadMarker({ name, path: markerUrl }),
       uploadModel({ name, path: modelUrl }),
@@ -75,6 +77,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Failed to save files", { status: 500 });
   }
   try {
+    // Compile the markers to a single target file
     await compile({ signal: abortController.signal });
   } catch (e) {
     return new NextResponse("Failed to compile", { status: 500 });

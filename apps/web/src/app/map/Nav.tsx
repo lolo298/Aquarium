@@ -1,9 +1,5 @@
 import { Home, Check, Ban } from "lucide-react";
 import { Button } from "@/ui/components/button";
-import { useAtom } from "jotai";
-import { fishAtom } from "@/lib/atoms";
-import { set } from "react-hook-form";
-import { use, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Polygon } from "leaflet";
 import { useQuery } from "@tanstack/react-query";

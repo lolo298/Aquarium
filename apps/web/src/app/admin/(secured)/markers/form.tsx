@@ -21,6 +21,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+// The upload form schema
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   marker: z

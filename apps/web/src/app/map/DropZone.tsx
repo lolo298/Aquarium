@@ -1,16 +1,14 @@
-import { Marker, Polygon, useMap, useMapEvents } from "react-leaflet";
+import { Polygon, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { LatLng, type LatLngExpression } from "leaflet";
-import { RefAttributes, useEffect, useRef, useState } from "react";
+import { type LatLngExpression } from "leaflet";
+import { useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import {
   draggedFishAtom,
   dropZoneAtom,
-  markersDataAtom,
   touchPositionAtom,
   zonesConfigAtom,
 } from "@/lib/atoms";
-import { set } from "react-hook-form";
 
 export default function DropZone() {
   const [options, setOptions] = useAtom(zonesConfigAtom);
@@ -18,11 +16,13 @@ export default function DropZone() {
   const [draggedFish, setDraggedFish] = useAtom(draggedFishAtom);
   const [dropZone, setDropZone] = useAtom(dropZoneAtom);
 
+  // Refs to the differnets leaflet layers
   const embrunsRef = useRef<L.Polygon | null>(null);
   const nurseRef = useRef<L.Polygon | null>(null);
   const brumeRef = useRef<L.Polygon | null>(null);
   const deepRef = useRef<L.Polygon | null>(null);
 
+  // The bounds of the differents zones on the map
   const embrunsBounds: LatLngExpression[] = [
     [80, 130],
     [180, 140],
@@ -59,7 +59,7 @@ export default function DropZone() {
   const map = useMap();
 
   useEffect(() => {
-    const coordinates = map.containerPointToLatLng(touchPosition);
+    // Remove the styles when the fish is not dragged
     if (!draggedFish) {
       setOptions({
         ...options,
@@ -71,6 +71,11 @@ export default function DropZone() {
       setDropZone(null);
       return;
     }
+
+    // Convert the touch coordinates on the document to map coordinates
+    const coordinates = map.containerPointToLatLng(touchPosition);
+
+    // Check if the fish is in a drop zone and change the style of the zone
     switch (true) {
       case embrunsRef.current?.getBounds().contains(coordinates):
         setOptions({

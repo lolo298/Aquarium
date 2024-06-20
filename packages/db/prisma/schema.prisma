@@ -14,6 +14,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+// The file model used to track the files uploaded in the bucket
 model File {
   id        String   @id @default(uuid())
   name      String
@@ -26,17 +27,18 @@ model File {
   Preview   Marker[] @relation("preview")
 }
 
+// The marker model used to track the markers and their linked files
 model Marker {
   id        String   @id @default(uuid())
   name      String
   model     File     @relation("model", fields: [modelId], references: [id], onDelete: Cascade)
   marker    File     @relation("marker", fields: [markerId], references: [id], onDelete: Cascade)
-  preview   File?    @relation("preview", fields: [previewId], references: [id], onDelete: Cascade)
+  preview   File     @relation("preview", fields: [previewId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   modelId   String
   markerId  String
-  previewId String?
+  previewId String
   Entity    Entity[]
 }
 
@@ -46,6 +48,7 @@ enum FileType {
   PREVIEW
 }
 
+// The data of a fish and its associated markers
 model Entity {
   id          String   @id @default(uuid())
   names       String[]

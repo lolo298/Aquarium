@@ -9,6 +9,7 @@ export function isClient() {
   return typeof window !== "undefined";
 }
 
+// Capture the logging done with console.log
 export class Capture {
   #captureLog: boolean;
   #cb?: (ogLog: typeof console.log, val: any[]) => void;
