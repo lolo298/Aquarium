@@ -1,24 +1,14 @@
 "use client";
 import { Provider } from "jotai";
-import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function Providers({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    window.addEventListener("message", (e) => {
-      if (
-        !e.data ||
-        e.data.source === "react-devtools-content-script" ||
-        e.data.wappalyzer
-      )
-        return;
-      console.log("message", e.data);
-      if (e.data && e.data.type === "precache-loaded") {
-        fetch("/api/markers");
-      }
-    });
-  }, []);
-
-  return <Provider>{children}</Provider>;
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Provider>{children}</Provider>
+    </QueryClientProvider>
+  );
 }
 
 export default Providers;

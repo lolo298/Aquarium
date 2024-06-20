@@ -1,11 +1,12 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import DataTable from "./DataTable";
-
-const queryClient = new QueryClient();
+import { getQueryClient } from "@/lib/query";
 
 function Markers() {
+  const queryClient = getQueryClient();
+
   return (
     <>
       <QueryClientProvider client={queryClient}>

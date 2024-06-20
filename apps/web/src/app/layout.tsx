@@ -50,8 +50,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <main className="flex-[10]">{children}</main>
-          <Nav />
+          <main className="relative flex-[10]">{children}</main>
         </Providers>
       </body>
     </html>

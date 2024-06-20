@@ -1,4 +1,10 @@
-import { createMarker, uploadMarker, uploadModel, write } from "@repo/db";
+import {
+  createMarker,
+  uploadMarker,
+  uploadModel,
+  uploadPreview,
+  write,
+} from "@repo/db";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs/promises";
@@ -18,19 +24,27 @@ interface UploadRequest {
   name: string;
   marker: TFile;
   model: TFile;
+  preview: TFile;
 }
 
+let abortController = new AbortController();
+
 export async function POST(req: NextRequest) {
+  abortController.abort();
+  abortController = new AbortController();
+
   const fd = await req.formData();
   const name = fd.get("name") as string;
   const marker = fd.get("marker") as File;
   const model = fd.get("model") as File;
+  const preview = fd.get("preview") as File;
 
-  const markerPath = `uploads/${Date.now()}-${name}${path.extname(marker.name)}`;
-  const modelPath = `uploads/${Date.now()}-${name}.glb`;
+  const markerPath = `uploads/markers/${Date.now()}-${name}${path.extname(marker.name)}`;
+  const previewPath = `uploads/previews/${Date.now()}-${name}${path.extname(marker.name)}`;
+  const modelPath = `uploads/models/${Date.now()}-${name}.glb`;
 
   try {
-    const [markerUrl, modelUrl] = await Promise.all([
+    const [markerUrl, modelUrl, previewUrl] = await Promise.all([
       write({
         url: markerPath,
         content: Buffer.from(await marker.arrayBuffer()),
@@ -39,23 +53,32 @@ export async function POST(req: NextRequest) {
         url: modelPath,
         content: Buffer.from(await model.arrayBuffer()),
       }),
+      write({
+        url: previewPath,
+        content: Buffer.from(await preview.arrayBuffer()),
+      }),
     ]);
 
-    const [dbMarker, dbModel] = await Promise.all([
+    const [dbMarker, dbModel, dbPreview] = await Promise.all([
       uploadMarker({ name, path: markerUrl }),
       uploadModel({ name, path: modelUrl }),
+      uploadPreview({ name, path: previewUrl }),
     ]);
     await createMarker({
       name,
       marker: dbMarker,
       model: dbModel,
+      preview: dbPreview,
     });
   } catch (e) {
     console.error(e);
     return new NextResponse("Failed to save files", { status: 500 });
   }
-
-  await compile();
+  try {
+    await compile({ signal: abortController.signal });
+  } catch (e) {
+    return new NextResponse("Failed to compile", { status: 500 });
+  }
 
   return new NextResponse("Files saved", { status: 200 });
 }

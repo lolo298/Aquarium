@@ -9,13 +9,21 @@ export async function DELETE(
   const id = params.id;
 
   try {
-    const marker = await getMarker(id);
+    const marker = await getMarker(id, {
+      marker: true,
+      model: true,
+      preview: true,
+    });
 
-    const paths = [marker?.marker?.path, marker?.model?.path];
+    const paths = [
+      marker?.marker?.path,
+      marker?.model?.path,
+      marker?.preview?.path,
+    ];
 
-    if (paths.some((path) => path === undefined)) {
-      return new NextResponse("File not found", { status: 404 });
-    }
+    // if (paths.some((path) => path === undefined)) {
+    //   return new NextResponse("File not found", { status: 404 });
+    // }
 
     await unlink(paths as string[]);
 

@@ -6,7 +6,7 @@ const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   maximumFileSizeToCacheInBytes: 7355608,
-  disable: process.env.NODE_ENV === "developments",
+  disable: process.env.NODE_ENV === "development",
   additionalPrecacheEntries: ["/", "/viewer"],
   reloadOnOnline: true,
 });

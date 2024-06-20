@@ -34,6 +34,13 @@ const formSchema = z.object({
     .custom<FileList>()
     .refine((file) => file?.length == 1, "File is required.")
     .refine((file) => file?.[0].name.endsWith(".glb"), "File must be a model."),
+  preview: z
+    .custom<FileList>()
+    .refine((file) => file?.length == 1, "File is required.")
+    .refine(
+      (file) => file?.[0].type.startsWith("image/"),
+      "File must be a valid image",
+    ),
 });
 
 export type formType = z.infer<typeof formSchema>;
@@ -56,11 +63,11 @@ function FormCmp() {
   });
 
   async function handleNewMarker(data: formType) {
-    console.log(data);
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("marker", data.marker[0]);
     formData.append("model", data.model[0]);
+    formData.append("preview", data.preview[0]);
 
     await fetch("/api/upload", {
       method: "POST",
@@ -70,6 +77,7 @@ function FormCmp() {
 
   const modelRef = form.register("model");
   const markerRef = form.register("marker");
+  const previewRef = form.register("preview");
 
   return (
     <Popover>
@@ -98,10 +106,24 @@ function FormCmp() {
             />
             <FormField
               control={form.control}
-              name="marker"
+              name="preview"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marker preview</FormLabel>
+                  <FormControl>
+                    <Input type="file" accept="image/*" {...previewRef} />
+                  </FormControl>
+                  <FormDescription>The preview file</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="marker"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Marker</FormLabel>
                   <FormControl>
                     <Input type="file" accept="image/*" {...markerRef} />
                   </FormControl>
