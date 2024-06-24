@@ -42,7 +42,7 @@ export default function MarkersPins() {
               draggable="true"
             >
               <Image
-                src={marker.preview.path}
+                src={`/api/files/${marker.preview.path}`}
                 alt={marker.name}
                 width={50}
                 height={50}

@@ -6,7 +6,6 @@ const withSerwist = withSerwistInit({
   swDest: "public/sw.js",
   maximumFileSizeToCacheInBytes: 7355608,
   disable: process.env.NODE_ENV === "development",
-  additionalPrecacheEntries: ["/", "/app", "/viewer", "/map"],
   reloadOnOnline: true,
 });
 
@@ -36,4 +35,5 @@ export default withSerwist({
     ],
   },
   distDir: "dist",
+  productionBrowserSourceMaps: true,
 });

@@ -37,9 +37,7 @@ export class Markers extends Strategy {
         },
         [
           handler.fetchAndCachePut(
-            new Request(
-              `https://ofnectvdmnyxxznhaagk.supabase.co/storage/v1/object/public/${bucket}/uploads/targets.mind`,
-            ),
+            new Request("/api/files/uploads/targets.mind"),
           ),
         ] as Promise<Response>[],
       ),

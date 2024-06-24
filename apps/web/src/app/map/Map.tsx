@@ -50,7 +50,7 @@ export default function Map() {
       markersFromZone.forEach((marker, i) => {
         // Create the preview image
         const img = new Image();
-        img.src = marker.preview.path;
+        img.src = `/api/files/${marker.preview.path}`;
         const aspect = img.naturalWidth / img.naturalHeight;
         const size = 25;
         const iconSize: PointExpression = [aspect * size, size];
@@ -64,7 +64,7 @@ export default function Map() {
             key={marker.id}
             icon={
               new L.Icon({
-                iconUrl: marker.preview.path,
+                iconUrl: `/api/files/${marker.preview.path}`,
                 iconSize,
               })
             }

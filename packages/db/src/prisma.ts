@@ -95,6 +95,7 @@ export async function deleteMarker(id: string) {
 
 export async function getAllFishs() {
   return client.entity.findMany({
+    include: { names: true },
     orderBy: { createdAt: "asc" },
   });
 }

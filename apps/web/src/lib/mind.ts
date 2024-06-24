@@ -26,7 +26,7 @@ export async function compile(options?: { signal: AbortSignal }) {
 
   //load markers image to node-canvas
   const images = await Promise.all(
-    markers.map((marker) => loadImage(marker.marker.path)),
+    markers.map((marker) => loadImage(`/api/files${marker.marker.path}`)),
   );
 
   capture.capture((ogLog, val) => {

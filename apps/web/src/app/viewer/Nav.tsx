@@ -16,7 +16,6 @@ import { useAtom } from "jotai";
 import { viewedFishIdAtom } from "@/lib/atoms";
 import { useRef } from "react";
 import Image from "next/image";
-import FishFood from "@/ui/FishFood.png";
 
 type Data = {
   primaryName: FishType["names"][0];
@@ -118,7 +117,12 @@ export default function Nav() {
                   {data.current.long} cm de longeur
                 </span>
                 <span className="flex items-center gap-2">
-                  <Image src={FishFood} alt="food: " height={48} width={48} />
+                  <Image
+                    src="/images/FishFood.png"
+                    alt="food: "
+                    height={48}
+                    width={48}
+                  />
                   {data.current.food?.join(", ")}
                 </span>
               </div>

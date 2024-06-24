@@ -5,10 +5,5 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const searchParams = req.nextUrl.searchParams;
-  const includeMarker = searchParams.get("includeMarker") === "true";
-
-  return NextResponse.json(
-    await getFishData(params.id, { Marker: includeMarker, names: true }),
-  );
+  return NextResponse.json(await getFishData(params.id, { names: true }));
 }

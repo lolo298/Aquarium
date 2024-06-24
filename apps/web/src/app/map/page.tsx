@@ -59,7 +59,7 @@ export default function Page() {
 
         {draggedFish && (
           <Image
-            src={draggedFish.preview.path}
+            src={`/api/files/${draggedFish.preview.path}`}
             alt={draggedFish.name}
             width={100}
             height={100}
