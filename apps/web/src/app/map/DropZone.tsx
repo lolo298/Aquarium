@@ -68,7 +68,7 @@ export default function DropZone() {
         brume: { options: { color: "purple" } },
         deep: { options: { color: "purple" } },
       });
-      setDropZone(null);
+      setDropZone({ polygon: null, zone: "" });
       return;
     }
 
@@ -82,14 +82,14 @@ export default function DropZone() {
           ...options,
           embruns: { options: { color: "yellow" } },
         });
-        setDropZone(embrunsRef.current);
+        setDropZone({ polygon: embrunsRef.current, zone: "embruns" });
         break;
       case nurseRef.current?.getBounds().contains(coordinates):
         setOptions({
           ...options,
           nurse: { options: { color: "yellow" } },
         });
-        setDropZone(nurseRef.current);
+        setDropZone({ polygon: nurseRef.current, zone: "nurse" });
         break;
       case brumeRef.current?.getBounds().contains(coordinates):
         setOptions({
@@ -97,14 +97,14 @@ export default function DropZone() {
           brume: { options: { color: "yellow" } },
         });
 
-        setDropZone(brumeRef.current);
+        setDropZone({ polygon: brumeRef.current, zone: "brume" });
         break;
       case deepRef.current?.getBounds().contains(coordinates):
         setOptions({
           ...options,
           deep: { options: { color: "yellow" } },
         });
-        setDropZone(deepRef.current);
+        setDropZone({ polygon: deepRef.current, zone: "deep" });
         break;
       default:
         setOptions({
@@ -114,7 +114,7 @@ export default function DropZone() {
           brume: { options: { color: "purple" } },
           deep: { options: { color: "purple" } },
         });
-        setDropZone(null);
+        setDropZone({ polygon: null, zone: "" });
         break;
     }
   }, [touchPosition]);

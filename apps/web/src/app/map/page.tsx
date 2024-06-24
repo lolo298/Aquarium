@@ -44,12 +44,13 @@ export default function Page() {
               ...olds,
               {
                 id: draggedFish!.id,
-                zone: dropZone,
+                polygon: dropZone.polygon,
+                zone: dropZone.zone,
               },
             ]);
           }
           setDraggedFish(null);
-          setDropZone(null);
+          setDropZone({ polygon: null, zone: "" });
           setTouchPosition([0, 0]);
         }}
       >
@@ -68,7 +69,6 @@ export default function Page() {
         )}
       </div>
       <Nav
-        markersData={markersData}
         onBan={() => {
           setMarkersData([]);
         }}

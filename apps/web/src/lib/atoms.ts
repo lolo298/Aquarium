@@ -2,6 +2,13 @@ import { atom } from "jotai";
 import { Markers } from "@/types";
 import { PathOptions } from "leaflet";
 
+/************* VIEWER *************/
+/**
+ * The currently viewed fish
+ */
+export const viewedFishIdAtom = atom<string | null>(null);
+
+/************* MAP *************/
 /**
  * The Currently dragged fish
  */
@@ -27,7 +34,10 @@ export const touchPositionAtom = atom<[number, number]>([0, 0]);
 /**
  * The active drop zone
  */
-export const dropZoneAtom = atom<L.Polygon | null>(null);
+export const dropZoneAtom = atom<{
+  polygon: L.Polygon | null;
+  zone: string;
+}>({ polygon: null, zone: "" });
 
 /**
  * The dropped markers data
@@ -35,6 +45,7 @@ export const dropZoneAtom = atom<L.Polygon | null>(null);
 export const markersDataAtom = atom<
   {
     id: string;
-    zone: L.Polygon | null;
+    polygon: L.Polygon | null;
+    zone: string;
   }[]
 >([]);

@@ -39,7 +39,7 @@ model Marker {
   modelId   String
   markerId  String
   previewId String
-  Entity    Entity[]
+  Entity    Entity?  @relation("Data")
 }
 
 enum FileType {
@@ -50,20 +50,21 @@ enum FileType {
 
 // The data of a fish and its associated markers
 model Entity {
-  id          String   @id @default(uuid())
-  names       String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Marker      Marker   @relation(fields: [markerId], references: [id])
-  markerId    String
+  id        String   @id @default(uuid())
+  names     Names[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Marker    Marker   @relation("Data", fields: [MarkerId], references: [id])
+  MarkerId  String   @unique
+
   description String?
 
-  OtherNames OtherName[]
-  long       Float?
-  food       String?
+  long Float
+  food String[]
+  zone String
 }
 
-model OtherName {
+model Names {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,4 +72,5 @@ model OtherName {
   entityId  String
   name      String
   language  String
+  primary   Boolean  @default(false)
 }

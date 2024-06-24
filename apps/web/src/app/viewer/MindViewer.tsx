@@ -8,10 +8,15 @@ import { useDrag } from "@use-gesture/react";
 import { useEffect, useRef, useState } from "react";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { ARView, ARAnchor } from "react-three-mind";
+import { useAtom } from "jotai";
+import { viewedFishIdAtom } from "@/lib/atoms";
 
 type Marker = Markers[0];
 
 export default function Viewer() {
+  const [_, setViewedFishId] = useAtom(viewedFishIdAtom);
+  const delay = useRef<ReturnType<typeof setTimeout>>();
+
   // get the markers data
   const query = useQuery<Marker[]>({
     queryKey: ["markers"],
@@ -27,12 +32,25 @@ export default function Viewer() {
       missTolerance={0}
       warmupTolerance={0}
       flipUserCamera={false}
-      className="inset-0 [&>*:first-child]:absolute [&>*:first-child]:inset-0 [&>*:first-child]:z-10 "
+      className="inset-0 z-0 [&>*:first-child]:absolute [&>*:first-child]:inset-0 [&>*:first-child]:z-10 "
     >
       <ambientLight />
       {/* Create an anchor for every markers in db */}
       {query.data?.map((marker, i) => (
-        <ARAnchor target={i} key={marker.id}>
+        <ARAnchor
+          target={i}
+          key={marker.id}
+          onAnchorFound={() => {
+            clearTimeout(delay.current);
+            setViewedFishId(marker.id);
+            console.log("Found anchor", marker);
+          }}
+          onAnchorLost={() => {
+            delay.current = setTimeout(() => {
+              setViewedFishId(null);
+            }, 2000);
+          }}
+        >
           <Model marker={marker} />
         </ARAnchor>
       ))}
@@ -74,7 +92,7 @@ function Model({ marker }: { marker: Marker }) {
       {...bind()}
       object={scene}
       rotation={rotation}
-      scale={1}
+      scale={0.75}
     />
   );
 }

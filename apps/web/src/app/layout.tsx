@@ -4,6 +4,7 @@ import "@/ui/index.css";
 import { Inter as FontSans } from "next/font/google";
 import { Metadata } from "next/types";
 import Providers from "./Providers";
+import { Toaster } from "@/ui/components/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
           <Header />
           <main className="relative flex-[10]">{children}</main>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

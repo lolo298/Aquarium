@@ -34,7 +34,7 @@ export default function Map() {
     () =>
       Object.groupBy(
         data.filter((marker) => marker.zone),
-        (marker) => marker.zone!.getLatLngs().toString(),
+        (marker) => marker.polygon!.getLatLngs().toString(),
       ),
     [data],
   );
@@ -45,7 +45,7 @@ export default function Map() {
     for (const markersFromZone of Object.values(fishsByZones)) {
       if (!markersFromZone || markersFromZone.length === 0) continue;
 
-      let center = markersFromZone[0].zone!.getCenter();
+      let center = markersFromZone[0].polygon!.getCenter();
 
       markersFromZone.forEach((marker, i) => {
         // Create the preview image

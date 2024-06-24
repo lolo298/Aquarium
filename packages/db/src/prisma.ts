@@ -92,3 +92,34 @@ export async function getMarker(id: string, include: markerInclude) {
 export async function deleteMarker(id: string) {
   return await client.marker.delete({ where: { id: id } });
 }
+
+export async function getAllFishs() {
+  return client.entity.findMany({
+    orderBy: { createdAt: "asc" },
+  });
+}
+
+export async function getFishData(id: string, include: Prisma.EntityInclude = {}) {
+  const entity = await client.entity.findUnique({
+    where: {
+      MarkerId: id,
+    },
+    include: { ...include },
+  });
+
+  if (entity) {
+    return entity;
+  }
+
+  await client.entity.create({
+    data: {
+      long: 0,
+      zone: "",
+      Marker: {
+        connect: { id },
+      },
+    },
+  });
+
+  return await getFishData(id, include);
+}

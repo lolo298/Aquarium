@@ -1,5 +1,7 @@
-import type { getAllMarkers } from "@repo/db";
+import type { getAllMarkers, getFishData, getAllFishs } from "@repo/db";
 export type Markers = Awaited<ReturnType<typeof getAllMarkers>>;
+export type Fishs = Awaited<ReturnType<typeof getAllFishs>>;
+export type Fish = Awaited<ReturnType<typeof getFishData>>;
 
 /**
  * The BeforeInstallPromptEvent is fired at the Window.onbeforeinstallprompt handler
