@@ -63,7 +63,7 @@ export default function Nav() {
       </Button>
       <Drawer>
         <DrawerTrigger asChild>
-          <Button disabled={!viewedFishId}>
+          <Button disabled={!viewedFishId} variant="secondary">
             <Info />
           </Button>
         </DrawerTrigger>

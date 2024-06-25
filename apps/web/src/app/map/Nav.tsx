@@ -44,9 +44,6 @@ export default function Nav({ onBan }: { onBan: () => void }) {
       >
         <Check />
       </Button>
-      <Button>
-        <Home />
-      </Button>
       <Button disabled={!oneFishSet} onClick={onBan}>
         <Ban />
       </Button>

@@ -33,7 +33,7 @@ function App() {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-[10] flex-col items-center justify-center gap-16 bg-secondary text-center">
+    <div className="flex h-full w-full flex-[10] flex-col items-center justify-center gap-16 bg-secondary px-4 text-center">
       <h2 className="text-4xl font-bold">Bienvenue sur Aquarium ARcade</h2>
       <p>
         Afin de profiter pleinement de l'expérience, ouvrez ce site sur chrome
