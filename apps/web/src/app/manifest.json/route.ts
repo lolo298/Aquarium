@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
       scope_url_host: process.env.COOLIFY_URL ?? "localhost",
       scope_url_path: "/",
     },
+    capture_links: "existing-client-navigate",
     icons: [
       {
         src: "images/icons/icon-72x72.png",

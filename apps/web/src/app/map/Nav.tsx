@@ -36,7 +36,7 @@ export default function Nav({ onBan }: { onBan: () => void }) {
           setMarkersData(goods);
 
           if (goods.length === markersData.length) {
-            toast.success("Bien joué");
+            toast.success("Bien joué !");
           } else {
             toast.error("Certains poissons ne sont pas à la bonne place");
           }

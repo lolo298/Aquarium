@@ -13,22 +13,12 @@ function App() {
       setInstallPrompt(e);
     };
 
-    //open app after installation
-    const afterInstallHandler = () => {
-      //open app with protocol web+aquariumarcade
-      window.open(
-        `https://${process.env.NEXT_PUBLIC_COOLIFY_URL ?? "localhost"}/app`,
-      );
-    };
-
     //@ts-expect-error
     window.addEventListener("beforeinstallprompt", installHandler);
-    window.addEventListener("appinstalled", afterInstallHandler);
 
     return () => {
       //@ts-expect-error
       window.removeEventListener("beforeinstallprompt", installHandler);
-      window.removeEventListener("appinstalled", afterInstallHandler);
     };
   }, []);
 
