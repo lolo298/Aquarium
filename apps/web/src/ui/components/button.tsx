@@ -2,6 +2,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import NextLink from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -15,7 +16,7 @@ const buttonVariants = cva(
         secondary:
           "text-button-text-secondary hover:before:brightness-95 before:bg-button-bg-secondary after:bg-radient-[circle_closest-side] after:from-white after:left-[10%] after:top-[10%]",
         destructive: "",
-        ghost: "before:bg-slate-100 text-slate-600 cursor-not-allowed",
+        ghost: "before:bg-slate-100 text-slate-600",
       },
       size: {
         sm: "h-9 px-3",
@@ -32,14 +33,28 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
+
+export interface AnchorProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement>,
     VariantProps<typeof buttonVariants> {
-  href?: string;
+  href: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return React.createElement("button", {
+      className: cn(buttonVariants({ variant, size, className })),
+      ref,
+      ...props,
+    });
+  },
+);
+Button.displayName = "Button";
+
+const Link = React.forwardRef<HTMLAnchorElement, AnchorProps>(
   ({ className, variant, size, href, ...props }, ref) => {
-    const Comp = href ? "a" : "button";
-    return React.createElement(Comp, {
+    return React.createElement("a", {
       className: cn(buttonVariants({ variant, size, className })),
       ref,
       href,
@@ -47,6 +62,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     });
   },
 );
-Button.displayName = "Button";
 
-export { Button, buttonVariants };
+Link.displayName = "Link";
+
+export { Button, Link, buttonVariants };

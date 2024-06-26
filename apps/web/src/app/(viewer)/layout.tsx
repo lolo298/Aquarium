@@ -1,13 +1,11 @@
-"use client";
 import dynamic from "next/dynamic";
 
-const MindViewer = dynamic(() => import("./MindViewer"), { ssr: false });
 const Nav = dynamic(() => import("./Nav"), { ssr: false });
 
-export default function Page() {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <MindViewer />
+      {children}
       <Nav />
     </>
   );

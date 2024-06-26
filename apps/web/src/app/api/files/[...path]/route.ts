@@ -7,7 +7,6 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { path: string[] } },
 ) {
-  console.log("request file at path ", params.path.join("/"));
   const blob = await read(params.path.join("/"));
 
   const r = /\.(png|jpg|jpeg)/g;

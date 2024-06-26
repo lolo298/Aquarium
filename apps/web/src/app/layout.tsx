@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import { Metadata } from "next/types";
 import Providers from "./Providers";
 import { Toaster } from "@/ui/components/sonner";
+import Link from "next/link";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,13 +45,13 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "flex min-h-full flex-col bg-background font-sans antialiased ",
+          "flex max-h-screen min-h-full flex-col bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
         <Providers>
           <Header />
-          <main className="relative flex-[10]">{children}</main>
+          <main className="relative flex-[10] overflow-auto">{children}</main>
         </Providers>
         <Toaster />
       </body>

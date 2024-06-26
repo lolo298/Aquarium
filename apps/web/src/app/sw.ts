@@ -34,6 +34,7 @@ self.addEventListener("install", async (event) => {
     "/app",
     "/viewer",
     "/map",
+    "/fishs",
     "/api/markers",
     "/api/fish",
     "/api/files/uploads/targets.mind",

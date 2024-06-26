@@ -1,4 +1,3 @@
-"use client";
 import { Markers } from "@/types";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { ObjectMap } from "@react-three/fiber";
@@ -10,10 +9,16 @@ import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { ARView, ARAnchor } from "react-three-mind";
 import { useAtom } from "jotai";
 import { viewedFishIdAtom } from "@/lib/atoms";
+import { useLocalStorage } from "usehooks-ts";
+import { set } from "react-hook-form";
 
 type Marker = Markers[0];
 
 export default function Viewer() {
+  const [viewedFishs, setViewedFishs] = useLocalStorage<string[]>(
+    "viewedFishs",
+    [],
+  );
   const [_, setViewedFishId] = useAtom(viewedFishIdAtom);
   const delay = useRef<ReturnType<typeof setTimeout>>();
 
@@ -44,6 +49,11 @@ export default function Viewer() {
             clearTimeout(delay.current);
             setViewedFishId(marker.id);
             console.log("Found anchor", marker);
+
+            setViewedFishs((prev) => {
+              if (prev.includes(marker.id)) return prev;
+              return [...prev, marker.id];
+            });
           }}
           onAnchorLost={() => {
             delay.current = setTimeout(() => {

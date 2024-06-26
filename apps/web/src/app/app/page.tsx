@@ -1,4 +1,4 @@
-import { Button } from "@/ui/components/button";
+import { Link } from "@/ui/components/button";
 
 // Installed app entrypoint
 function App() {
@@ -12,13 +12,13 @@ function App() {
         qu'ils vous feront assez confiance pour que vous puissiez les nourrir !
         Une expérience instructive et ludique en réalité augmentée !
       </p>
-      <Button
+      <Link
         href="/viewer"
         size="lg"
         className="bg-[linear-gradient(to_bottom,#00000055,#00000055_40%,#FFFFFF88_60%,#FFFFFF88)]"
       >
         Continuer
-      </Button>
+      </Link>
     </div>
   );
 }
