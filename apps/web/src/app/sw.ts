@@ -21,10 +21,6 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   runtimeCaching: [
-    // {
-    //   matcher: /api\/markers/i,
-    //   handler: new Markers(),
-    // },
     {
       matcher: /.*/i,
       handler: new StaleWhileRevalidate(),

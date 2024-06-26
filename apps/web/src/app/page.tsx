@@ -37,7 +37,7 @@ function App() {
           await installPrompt?.prompt();
         }}
       >
-        Install
+        Installer
       </Button>
     </div>
   );
